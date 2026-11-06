@@ -1,0 +1,573 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.9.6, pytest-8.4.2, pluggy-1.6.0 -- /Library/Developer/CommandLineTools/usr/bin/python3
+rootdir: /Users/ashaabdulkadir/workspace/language-of-computation/week4-assignment
+configfile: pytest.ini
+testpaths: tests
+collecting ... collected 46 items
+
+tests/test_ingest.py::test_example_01_matching_valid_pair PASSED         [  2%]
+tests/test_ingest.py::test_example_02_padded_isbn10_and_rounded_isbn13 PASSED [  4%]
+tests/test_ingest.py::test_example_03_eight_digit_isbn10_padded_isbn13_derived PASSED [  6%]
+tests/test_ingest.py::test_example_04_hyphens_removed PASSED             [  8%]
+tests/test_ingest.py::test_example_05_spaces_removed PASSED              [ 10%]
+tests/test_ingest.py::test_example_06_lowercase_x_uppercased PASSED      [ 13%]
+tests/test_ingest.py::test_example_07_isbn13_in_isbn_column_moved PASSED [ 15%]
+tests/test_ingest.py::test_example_08_isbn10_derived_from_978_isbn13 PASSED [ 17%]
+tests/test_ingest.py::test_example_09_979_isbn13_has_no_isbn10 PASSED    [ 19%]
+tests/test_ingest.py::test_example_10_rounded_isbn13_matches_derived PASSED [ 21%]
+tests/test_ingest.py::test_example_11_rounded_isbn13_without_isbn10 PASSED [ 23%]
+tests/test_ingest.py::test_example_12_ambiguous_rounded_isbn13 PASSED    [ 26%]
+tests/test_ingest.py::test_example_13_wrong_check_digit PASSED           [ 28%]
+tests/test_ingest.py::test_example_14_illegal_letter PASSED              [ 30%]
+tests/test_ingest.py::test_example_15_extra_digit PASSED                 [ 32%]
+tests/test_ingest.py::test_example_16_product_code PASSED                [ 34%]
+tests/test_ingest.py::test_example_17_product_code_with_valid_isbn10 PASSED [ 36%]
+tests/test_ingest.py::test_example_18_dot0_copy_of_isbn10 PASSED         [ 39%]
+tests/test_ingest.py::test_example_19_unconfirmed_dot0_value PASSED      [ 41%]
+tests/test_ingest.py::test_example_20_both_isbns_blank PASSED            [ 43%]
+tests/test_ingest.py::test_example_21_valid_but_mismatched_pair FAILED   [ 45%]
+tests/test_ingest.py::test_example_22_isbn_owned_by_another_book FAILED  [ 47%]
+tests/test_ingest.py::test_example_23_two_valid_mismatched_isbns FAILED  [ 50%]
+tests/test_ingest.py::test_example_24_exact_duplicate_in_one_file FAILED [ 52%]
+tests/test_ingest.py::test_example_25_accepted_book_repeats_with_normalized_isbns PASSED [ 54%]
+tests/test_ingest.py::test_example_26_blank_isbns_never_erase_accepted_ones PASSED [ 56%]
+tests/test_ingest.py::test_example_27_approved_metadata_updated PASSED   [ 58%]
+tests/test_ingest.py::test_example_28_same_book_id_with_different_identity[title-A Different Title] FAILED [ 60%]
+tests/test_ingest.py::test_example_28_same_book_id_with_different_identity[authors-A Different Author] FAILED [ 63%]
+tests/test_ingest.py::test_example_29_two_new_rows_share_a_goodreads_id PASSED [ 65%]
+tests/test_ingest.py::test_example_30_no_goodreads_id_and_no_isbn FAILED [ 67%]
+tests/test_ingest.py::test_example_31_two_new_books_claim_the_same_isbn FAILED [ 69%]
+tests/test_ingest.py::test_example_32_different_validated_isbn_on_existing_book PASSED [ 71%]
+tests/test_ingest.py::test_example_33_required_identity_missing[blank-book_id] FAILED [ 73%]
+tests/test_ingest.py::test_example_33_required_identity_missing[nonnumeric-book_id] FAILED [ 76%]
+tests/test_ingest.py::test_example_33_required_identity_missing[fractional-book_id] FAILED [ 78%]
+tests/test_ingest.py::test_example_33_required_identity_missing[blank-title] FAILED [ 80%]
+tests/test_ingest.py::test_example_33_required_identity_missing[blank-authors] FAILED [ 82%]
+tests/test_ingest.py::test_example_34_missing_isbn_filled_later PASSED   [ 84%]
+tests/test_ingest.py::test_example_35_invalid_isbn10_and_unsupported_rounded_isbn13 PASSED [ 86%]
+tests/test_ingest.py::test_rerun_creates_no_duplicates PASSED            [ 89%]
+tests/test_ingest.py::test_every_run_appends_to_the_log PASSED           [ 91%]
+tests/test_ingest.py::test_outcome_counts_add_up_to_rows_read[run1-books] PASSED [ 93%]
+tests/test_ingest.py::test_outcome_counts_add_up_to_rows_read[run2-books-again] PASSED [ 95%]
+tests/test_ingest.py::test_outcome_counts_add_up_to_rows_read[run3-batch2] PASSED [ 97%]
+tests/test_ingest.py::test_same_file_on_empty_database_gives_same_database PASSED [100%]
+
+=================================== FAILURES ===================================
+__________________ test_example_21_valid_but_mismatched_pair ___________________
+
+env = <conftest.Env object at 0x107dbcbb0>
+
+    def test_example_21_valid_but_mismatched_pair(env):
+        """Example 21 (R21): both valid but not a pair; keep the book, flag."""
+>       e = load_one(env, 20021, "1555550126", "9781555550134")
+
+tests/test_ingest.py:254: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_ingest.py:102: in load_one
+    counts_are(entry, read=1, loaded=1)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+entry = {'attention': [{'book_id': '20021', 'goodreads_book_id': '90020021', 'outcome': 'rejected', 'raw_isbn': '1555550126', .....}, 'counts_by_issue': [{'action': 'rejected', 'issue': 'isbn and isbn13 belong to different books', 'rows': 1}], ...}
+read = 1, outcomes = {'loaded': 1}
+c = {'loaded': 0, 'read': 1, 'rejected': 1, 'skipped': 0, ...}, @py_assert0 = 0
+@py_assert2 = False, name = 'loaded'
+@py_assert4 = <built-in method get of dict object at 0x107da1500>
+
+    def counts_are(entry, read, **outcomes):
+        c = entry[LOG_COUNTS]
+        assert c["read"] == read
+        for name in OUTCOMES:
+>           assert c[name] == outcomes.get(name, 0), "{}: expected {}, got {}".format(
+                name, outcomes.get(name, 0), c[name])
+E           AssertionError: loaded: expected 1, got 0
+E           assert 0 == 1
+E            +  where 1 = <built-in method get of dict object at 0x107da1500>('loaded', 0)
+E            +    where <built-in method get of dict object at 0x107da1500> = {'loaded': 1}.get
+
+tests/test_ingest.py:50: AssertionError
+----------------------------- Captured stdout call -----------------------------
+2026-11-06 16:22:39 CST  input-1.csv
+  read 1, loaded 0, updated 0, skipped 0 (already exist 0, duplicates in file 0), rejected 1, warnings 0
+  details: /var/folders/4k/h8qgc7yd653b1zd428bj14jc0000gn/T/ingest-test-av0kc6ai/test-ingestion-log.json
+__________________ test_example_22_isbn_owned_by_another_book __________________
+
+env = <conftest.Env object at 0x107dbc760>
+
+    def test_example_22_isbn_owned_by_another_book(env):
+        """Example 22 (R22): after Angels & Demons owns the ISBN, Paper Moons is
+        loaded without it; warn and flag. Angels & Demons keeps it."""
+        env.run_rows(new_book(20122, "1416524797", ""))
+        e = env.run_rows(new_book(20022, "1416524797", ""))
+>       counts_are(e, read=1, loaded=1)
+
+tests/test_ingest.py:264: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+entry = {'attention': [{'book_id': '20022', 'goodreads_book_id': '90020022', 'outcome': 'rejected', 'raw_isbn': '1416524797', ...s_by_issue': [{'action': 'rejected', 'issue': 'ISBN already belongs to another book in the database', 'rows': 1}], ...}
+read = 1, outcomes = {'loaded': 1}
+c = {'loaded': 0, 'read': 1, 'rejected': 1, 'skipped': 0, ...}, @py_assert0 = 0
+@py_assert2 = False, name = 'loaded'
+@py_assert4 = <built-in method get of dict object at 0x107e737c0>
+
+    def counts_are(entry, read, **outcomes):
+        c = entry[LOG_COUNTS]
+        assert c["read"] == read
+        for name in OUTCOMES:
+>           assert c[name] == outcomes.get(name, 0), "{}: expected {}, got {}".format(
+                name, outcomes.get(name, 0), c[name])
+E           AssertionError: loaded: expected 1, got 0
+E           assert 0 == 1
+E            +  where 1 = <built-in method get of dict object at 0x107e737c0>('loaded', 0)
+E            +    where <built-in method get of dict object at 0x107e737c0> = {'loaded': 1}.get
+
+tests/test_ingest.py:50: AssertionError
+----------------------------- Captured stdout call -----------------------------
+2026-11-06 16:22:39 CST  input-1.csv
+  read 1, loaded 1, updated 0, skipped 0 (already exist 0, duplicates in file 0), rejected 0, warnings 0
+  details: /var/folders/4k/h8qgc7yd653b1zd428bj14jc0000gn/T/ingest-test-eypreljp/test-ingestion-log.json
+2026-11-06 16:22:39 CST  input-2.csv
+  read 1, loaded 0, updated 0, skipped 0 (already exist 0, duplicates in file 0), rejected 1, warnings 0
+  details: /var/folders/4k/h8qgc7yd653b1zd428bj14jc0000gn/T/ingest-test-eypreljp/test-ingestion-log.json
+__________________ test_example_23_two_valid_mismatched_isbns __________________
+
+env = <conftest.Env object at 0x107d05850>
+
+    def test_example_23_two_valid_mismatched_isbns(env):
+        """Example 23 (R21): keep the book without either cleaned ISBN; flag."""
+>       e = load_one(env, 20023, "0446612707", "9780553813951")
+
+tests/test_ingest.py:273: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_ingest.py:102: in load_one
+    counts_are(entry, read=1, loaded=1)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+entry = {'attention': [{'book_id': '20023', 'goodreads_book_id': '90020023', 'outcome': 'rejected', 'raw_isbn': '0446612707', .....}, 'counts_by_issue': [{'action': 'rejected', 'issue': 'isbn and isbn13 belong to different books', 'rows': 1}], ...}
+read = 1, outcomes = {'loaded': 1}
+c = {'loaded': 0, 'read': 1, 'rejected': 1, 'skipped': 0, ...}, @py_assert0 = 0
+@py_assert2 = False, name = 'loaded'
+@py_assert4 = <built-in method get of dict object at 0x107df86c0>
+
+    def counts_are(entry, read, **outcomes):
+        c = entry[LOG_COUNTS]
+        assert c["read"] == read
+        for name in OUTCOMES:
+>           assert c[name] == outcomes.get(name, 0), "{}: expected {}, got {}".format(
+                name, outcomes.get(name, 0), c[name])
+E           AssertionError: loaded: expected 1, got 0
+E           assert 0 == 1
+E            +  where 1 = <built-in method get of dict object at 0x107df86c0>('loaded', 0)
+E            +    where <built-in method get of dict object at 0x107df86c0> = {'loaded': 1}.get
+
+tests/test_ingest.py:50: AssertionError
+----------------------------- Captured stdout call -----------------------------
+2026-11-06 16:22:39 CST  input-1.csv
+  read 1, loaded 0, updated 0, skipped 0 (already exist 0, duplicates in file 0), rejected 1, warnings 0
+  details: /var/folders/4k/h8qgc7yd653b1zd428bj14jc0000gn/T/ingest-test-gkv1xwgw/test-ingestion-log.json
+_________________ test_example_24_exact_duplicate_in_one_file __________________
+
+env = <conftest.Env object at 0x107d4c790>
+
+    def test_example_24_exact_duplicate_in_one_file(env):
+        """Example 24 (R23): first loaded, second skipped as exact duplicate; two rows counted."""
+        row = new_book(20024, "1528746309", "9781528746304")
+        e = env.run_rows(row, list(row))
+        counts_are(e, read=2, loaded=1, skipped=1)
+        assert len(env.books(20024)) == 1
+        isbns_are(env, 20024, "1528746309", "9781528746304")
+>       reason_contains(e, 20024, "exact duplicate in input")
+
+tests/test_ingest.py:285: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+entry = {'attention': [{'book_id': '20024', 'goodreads_book_id': '90020024', 'outcome': 'skipped', 'raw_isbn': '1528746309', .... 'counts_by_issue': [{'action': 'skipped', 'issue': 'Exact duplicate of an earlier row in this file', 'rows': 1}], ...}
+book_id = 20024, text = 'exact duplicate in input'
+
+    def reason_contains(entry, book_id, text):
+        reasons = " ".join(str(r.get(RECORD_REASON, "")) for r in records_for(entry, book_id)).lower()
+>       assert text in reasons, "book {}: reason should mention {!r}".format(book_id, text)
+E       AssertionError: book 20024: reason should mention 'exact duplicate in input'
+E       assert 'exact duplicate in input' in 'exact duplicate of an earlier row in this file (row 1)'
+
+tests/test_ingest.py:87: AssertionError
+----------------------------- Captured stdout call -----------------------------
+2026-11-06 16:22:39 CST  input-1.csv
+  read 2, loaded 1, updated 0, skipped 1 (already exist 0, duplicates in file 1), rejected 0, warnings 0
+  details: /var/folders/4k/h8qgc7yd653b1zd428bj14jc0000gn/T/ingest-test-ijo2stbw/test-ingestion-log.json
+_ test_example_28_same_book_id_with_different_identity[title-A Different Title] _
+
+env = <conftest.Env object at 0x107ce87c0>, field = 'title'
+value = 'A Different Title'
+
+    @pytest.mark.parametrize("field,value", [("title", "A Different Title"), ("authors", "A Different Author")])
+    def test_example_28_same_book_id_with_different_identity(env, field, value):
+        """Example 28 (R07): same book_id with a different title or authors is
+        rejected; the existing record is unchanged."""
+        env.run_rows(make_row("9"))
+        before = env.book(9)
+        e = env.run_rows(make_row("9", **{field: value}))
+>       counts_are(e, read=1, rejected=1)
+
+tests/test_ingest.py:330: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+entry = {'attention': [], 'changes': [{'book_id': '9', 'field': 'title', 'goodreads_book_id': '960', 'new_value': 'A Different Title', ...}], 'counts': {'loaded': 0, 'read': 1, 'rejected': 0, 'skipped': 0, ...}, 'counts_by_issue': [], ...}
+read = 1, outcomes = {'rejected': 1}
+c = {'loaded': 0, 'read': 1, 'rejected': 0, 'skipped': 0, ...}, @py_assert0 = 1
+@py_assert2 = False, name = 'updated'
+@py_assert4 = <built-in method get of dict object at 0x107e6da40>
+
+    def counts_are(entry, read, **outcomes):
+        c = entry[LOG_COUNTS]
+        assert c["read"] == read
+        for name in OUTCOMES:
+>           assert c[name] == outcomes.get(name, 0), "{}: expected {}, got {}".format(
+                name, outcomes.get(name, 0), c[name])
+E           AssertionError: updated: expected 0, got 1
+E           assert 1 == 0
+E            +  where 0 = <built-in method get of dict object at 0x107e6da40>('updated', 0)
+E            +    where <built-in method get of dict object at 0x107e6da40> = {'rejected': 1}.get
+
+tests/test_ingest.py:50: AssertionError
+----------------------------- Captured stdout call -----------------------------
+2026-11-06 16:22:39 CST  input-1.csv
+  read 1, loaded 1, updated 0, skipped 0 (already exist 0, duplicates in file 0), rejected 0, warnings 0
+  details: /var/folders/4k/h8qgc7yd653b1zd428bj14jc0000gn/T/ingest-test-1iyuc5e8/test-ingestion-log.json
+2026-11-06 16:22:39 CST  input-2.csv
+  read 1, loaded 0, updated 1, skipped 0 (already exist 0, duplicates in file 0), rejected 0, warnings 0
+  details: /var/folders/4k/h8qgc7yd653b1zd428bj14jc0000gn/T/ingest-test-1iyuc5e8/test-ingestion-log.json
+_ test_example_28_same_book_id_with_different_identity[authors-A Different Author] _
+
+env = <conftest.Env object at 0x107d0fd90>, field = 'authors'
+value = 'A Different Author'
+
+    @pytest.mark.parametrize("field,value", [("title", "A Different Title"), ("authors", "A Different Author")])
+    def test_example_28_same_book_id_with_different_identity(env, field, value):
+        """Example 28 (R07): same book_id with a different title or authors is
+        rejected; the existing record is unchanged."""
+        env.run_rows(make_row("9"))
+        before = env.book(9)
+        e = env.run_rows(make_row("9", **{field: value}))
+>       counts_are(e, read=1, rejected=1)
+
+tests/test_ingest.py:330: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+entry = {'attention': [], 'changes': [{'book_id': '9', 'field': 'authors', 'goodreads_book_id': '960', 'new_value': 'A Different Author', ...}], 'counts': {'loaded': 0, 'read': 1, 'rejected': 0, 'skipped': 0, ...}, 'counts_by_issue': [], ...}
+read = 1, outcomes = {'rejected': 1}
+c = {'loaded': 0, 'read': 1, 'rejected': 0, 'skipped': 0, ...}, @py_assert0 = 1
+@py_assert2 = False, name = 'updated'
+@py_assert4 = <built-in method get of dict object at 0x107dd6940>
+
+    def counts_are(entry, read, **outcomes):
+        c = entry[LOG_COUNTS]
+        assert c["read"] == read
+        for name in OUTCOMES:
+>           assert c[name] == outcomes.get(name, 0), "{}: expected {}, got {}".format(
+                name, outcomes.get(name, 0), c[name])
+E           AssertionError: updated: expected 0, got 1
+E           assert 1 == 0
+E            +  where 0 = <built-in method get of dict object at 0x107dd6940>('updated', 0)
+E            +    where <built-in method get of dict object at 0x107dd6940> = {'rejected': 1}.get
+
+tests/test_ingest.py:50: AssertionError
+----------------------------- Captured stdout call -----------------------------
+2026-11-06 16:22:39 CST  input-1.csv
+  read 1, loaded 1, updated 0, skipped 0 (already exist 0, duplicates in file 0), rejected 0, warnings 0
+  details: /var/folders/4k/h8qgc7yd653b1zd428bj14jc0000gn/T/ingest-test-5m152hnl/test-ingestion-log.json
+2026-11-06 16:22:39 CST  input-2.csv
+  read 1, loaded 0, updated 1, skipped 0 (already exist 0, duplicates in file 0), rejected 0, warnings 0
+  details: /var/folders/4k/h8qgc7yd653b1zd428bj14jc0000gn/T/ingest-test-5m152hnl/test-ingestion-log.json
+_________________ test_example_30_no_goodreads_id_and_no_isbn __________________
+
+env = <conftest.Env object at 0x107d47430>
+
+    def test_example_30_no_goodreads_id_and_no_isbn(env):
+        """Example 30 (R06, R20): primary identity is enough; loaded with a warning."""
+        e = env.run_rows(new_book(20030, goodreads_book_id=""))
+>       counts_are(e, read=1, loaded=1)
+
+tests/test_ingest.py:346: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+entry = {'attention': [{'book_id': '20030', 'goodreads_book_id': '', 'outcome': 'rejected', 'raw_isbn': '', ...}], 'changes': ... 'counts_by_issue': [{'action': 'rejected', 'issue': 'No usable ISBN and no valid goodreads_book_id', 'rows': 1}], ...}
+read = 1, outcomes = {'loaded': 1}
+c = {'loaded': 0, 'read': 1, 'rejected': 1, 'skipped': 0, ...}, @py_assert0 = 0
+@py_assert2 = False, name = 'loaded'
+@py_assert4 = <built-in method get of dict object at 0x107dc6440>
+
+    def counts_are(entry, read, **outcomes):
+        c = entry[LOG_COUNTS]
+        assert c["read"] == read
+        for name in OUTCOMES:
+>           assert c[name] == outcomes.get(name, 0), "{}: expected {}, got {}".format(
+                name, outcomes.get(name, 0), c[name])
+E           AssertionError: loaded: expected 1, got 0
+E           assert 0 == 1
+E            +  where 1 = <built-in method get of dict object at 0x107dc6440>('loaded', 0)
+E            +    where <built-in method get of dict object at 0x107dc6440> = {'loaded': 1}.get
+
+tests/test_ingest.py:50: AssertionError
+----------------------------- Captured stdout call -----------------------------
+2026-11-06 16:22:39 CST  input-1.csv
+  read 1, loaded 0, updated 0, skipped 0 (already exist 0, duplicates in file 0), rejected 1, warnings 0
+  details: /var/folders/4k/h8qgc7yd653b1zd428bj14jc0000gn/T/ingest-test-8vr15d01/test-ingestion-log.json
+______________ test_example_31_two_new_books_claim_the_same_isbn _______________
+
+env = <conftest.Env object at 0x107ceba60>
+
+    def test_example_31_two_new_books_claim_the_same_isbn(env):
+        """Example 31 (R22): both loaded without the disputed ISBN; both flagged."""
+        e = env.run_rows(new_book(20031, "0300000022", ""), new_book(20131, "0300000022", ""))
+>       counts_are(e, read=2, loaded=2)
+
+tests/test_ingest.py:354: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+entry = {'attention': [{'book_id': '20031', 'goodreads_book_id': '90020031', 'outcome': 'rejected', 'raw_isbn': '0300000022', .....}, 'counts_by_issue': [{'action': 'rejected', 'issue': 'Same ISBN on different books in this file', 'rows': 2}], ...}
+read = 2, outcomes = {'loaded': 2}
+c = {'loaded': 0, 'read': 2, 'rejected': 2, 'skipped': 0, ...}, @py_assert0 = 0
+@py_assert2 = False, name = 'loaded'
+@py_assert4 = <built-in method get of dict object at 0x107dd67c0>
+
+    def counts_are(entry, read, **outcomes):
+        c = entry[LOG_COUNTS]
+        assert c["read"] == read
+        for name in OUTCOMES:
+>           assert c[name] == outcomes.get(name, 0), "{}: expected {}, got {}".format(
+                name, outcomes.get(name, 0), c[name])
+E           AssertionError: loaded: expected 2, got 0
+E           assert 0 == 2
+E            +  where 2 = <built-in method get of dict object at 0x107dd67c0>('loaded', 0)
+E            +    where <built-in method get of dict object at 0x107dd67c0> = {'loaded': 2}.get
+
+tests/test_ingest.py:50: AssertionError
+----------------------------- Captured stdout call -----------------------------
+2026-11-06 16:22:39 CST  input-1.csv
+  read 2, loaded 0, updated 0, skipped 0 (already exist 0, duplicates in file 0), rejected 2, warnings 0
+  details: /var/folders/4k/h8qgc7yd653b1zd428bj14jc0000gn/T/ingest-test-eabspqly/test-ingestion-log.json
+___________ test_example_33_required_identity_missing[blank-book_id] ___________
+
+env = <conftest.Env object at 0x107cdf880>, changes = {'book_id': ''}
+
+    @pytest.mark.parametrize("changes", [
+        {"book_id": ""},
+        {"book_id": "abc"},
+        {"book_id": "12.5"},
+        {"title": ""},
+        {"authors": "   "},
+    ], ids=["blank-book_id", "nonnumeric-book_id", "fractional-book_id", "blank-title", "blank-authors"])
+    def test_example_33_required_identity_missing(env, changes):
+        """Example 33 (R05): blank or invalid book_id, or blank title or authors:
+        rejected, no book inserted."""
+        e = env.run_rows(new_book(20033, **changes))
+>       counts_are(e, read=1, rejected=1)
+
+tests/test_ingest.py:381: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+entry = {'attention': [{'book_id': '', 'goodreads_book_id': '90020033', 'outcome': 'loaded', 'raw_isbn': '', ...}], 'changes':...pped': 0, ...}, 'counts_by_issue': [{'action': 'no ISBN stored', 'issue': 'no ISBN in either column', 'rows': 1}], ...}
+read = 1, outcomes = {'rejected': 1}
+c = {'loaded': 1, 'read': 1, 'rejected': 0, 'skipped': 0, ...}, @py_assert0 = 1
+@py_assert2 = False, name = 'loaded'
+@py_assert4 = <built-in method get of dict object at 0x107dacb40>
+
+    def counts_are(entry, read, **outcomes):
+        c = entry[LOG_COUNTS]
+        assert c["read"] == read
+        for name in OUTCOMES:
+>           assert c[name] == outcomes.get(name, 0), "{}: expected {}, got {}".format(
+                name, outcomes.get(name, 0), c[name])
+E           AssertionError: loaded: expected 0, got 1
+E           assert 1 == 0
+E            +  where 0 = <built-in method get of dict object at 0x107dacb40>('loaded', 0)
+E            +    where <built-in method get of dict object at 0x107dacb40> = {'rejected': 1}.get
+
+tests/test_ingest.py:50: AssertionError
+----------------------------- Captured stdout call -----------------------------
+2026-11-06 16:22:39 CST  input-1.csv
+  read 1, loaded 1, updated 0, skipped 0 (already exist 0, duplicates in file 0), rejected 0, warnings 1
+  details: /var/folders/4k/h8qgc7yd653b1zd428bj14jc0000gn/T/ingest-test-voyd4vp7/test-ingestion-log.json
+________ test_example_33_required_identity_missing[nonnumeric-book_id] _________
+
+env = <conftest.Env object at 0x107d074c0>, changes = {'book_id': 'abc'}
+
+    @pytest.mark.parametrize("changes", [
+        {"book_id": ""},
+        {"book_id": "abc"},
+        {"book_id": "12.5"},
+        {"title": ""},
+        {"authors": "   "},
+    ], ids=["blank-book_id", "nonnumeric-book_id", "fractional-book_id", "blank-title", "blank-authors"])
+    def test_example_33_required_identity_missing(env, changes):
+        """Example 33 (R05): blank or invalid book_id, or blank title or authors:
+        rejected, no book inserted."""
+        e = env.run_rows(new_book(20033, **changes))
+>       counts_are(e, read=1, rejected=1)
+
+tests/test_ingest.py:381: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+entry = {'attention': [{'book_id': 'abc', 'goodreads_book_id': '90020033', 'outcome': 'loaded', 'raw_isbn': '', ...}], 'change...pped': 0, ...}, 'counts_by_issue': [{'action': 'no ISBN stored', 'issue': 'no ISBN in either column', 'rows': 1}], ...}
+read = 1, outcomes = {'rejected': 1}
+c = {'loaded': 1, 'read': 1, 'rejected': 0, 'skipped': 0, ...}, @py_assert0 = 1
+@py_assert2 = False, name = 'loaded'
+@py_assert4 = <built-in method get of dict object at 0x107e5b340>
+
+    def counts_are(entry, read, **outcomes):
+        c = entry[LOG_COUNTS]
+        assert c["read"] == read
+        for name in OUTCOMES:
+>           assert c[name] == outcomes.get(name, 0), "{}: expected {}, got {}".format(
+                name, outcomes.get(name, 0), c[name])
+E           AssertionError: loaded: expected 0, got 1
+E           assert 1 == 0
+E            +  where 0 = <built-in method get of dict object at 0x107e5b340>('loaded', 0)
+E            +    where <built-in method get of dict object at 0x107e5b340> = {'rejected': 1}.get
+
+tests/test_ingest.py:50: AssertionError
+----------------------------- Captured stdout call -----------------------------
+2026-11-06 16:22:39 CST  input-1.csv
+  read 1, loaded 1, updated 0, skipped 0 (already exist 0, duplicates in file 0), rejected 0, warnings 1
+  details: /var/folders/4k/h8qgc7yd653b1zd428bj14jc0000gn/T/ingest-test-ipfm_xqp/test-ingestion-log.json
+________ test_example_33_required_identity_missing[fractional-book_id] _________
+
+env = <conftest.Env object at 0x107d0a9d0>, changes = {'book_id': '12.5'}
+
+    @pytest.mark.parametrize("changes", [
+        {"book_id": ""},
+        {"book_id": "abc"},
+        {"book_id": "12.5"},
+        {"title": ""},
+        {"authors": "   "},
+    ], ids=["blank-book_id", "nonnumeric-book_id", "fractional-book_id", "blank-title", "blank-authors"])
+    def test_example_33_required_identity_missing(env, changes):
+        """Example 33 (R05): blank or invalid book_id, or blank title or authors:
+        rejected, no book inserted."""
+        e = env.run_rows(new_book(20033, **changes))
+>       counts_are(e, read=1, rejected=1)
+
+tests/test_ingest.py:381: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+entry = {'attention': [{'book_id': '12.5', 'goodreads_book_id': '90020033', 'outcome': 'loaded', 'raw_isbn': '', ...}], 'chang...pped': 0, ...}, 'counts_by_issue': [{'action': 'no ISBN stored', 'issue': 'no ISBN in either column', 'rows': 1}], ...}
+read = 1, outcomes = {'rejected': 1}
+c = {'loaded': 1, 'read': 1, 'rejected': 0, 'skipped': 0, ...}, @py_assert0 = 1
+@py_assert2 = False, name = 'loaded'
+@py_assert4 = <built-in method get of dict object at 0x107e0d8c0>
+
+    def counts_are(entry, read, **outcomes):
+        c = entry[LOG_COUNTS]
+        assert c["read"] == read
+        for name in OUTCOMES:
+>           assert c[name] == outcomes.get(name, 0), "{}: expected {}, got {}".format(
+                name, outcomes.get(name, 0), c[name])
+E           AssertionError: loaded: expected 0, got 1
+E           assert 1 == 0
+E            +  where 0 = <built-in method get of dict object at 0x107e0d8c0>('loaded', 0)
+E            +    where <built-in method get of dict object at 0x107e0d8c0> = {'rejected': 1}.get
+
+tests/test_ingest.py:50: AssertionError
+----------------------------- Captured stdout call -----------------------------
+2026-11-06 16:22:39 CST  input-1.csv
+  read 1, loaded 1, updated 0, skipped 0 (already exist 0, duplicates in file 0), rejected 0, warnings 1
+  details: /var/folders/4k/h8qgc7yd653b1zd428bj14jc0000gn/T/ingest-test-508pmtfk/test-ingestion-log.json
+____________ test_example_33_required_identity_missing[blank-title] ____________
+
+env = <conftest.Env object at 0x107d0ac40>, changes = {'title': ''}
+
+    @pytest.mark.parametrize("changes", [
+        {"book_id": ""},
+        {"book_id": "abc"},
+        {"book_id": "12.5"},
+        {"title": ""},
+        {"authors": "   "},
+    ], ids=["blank-book_id", "nonnumeric-book_id", "fractional-book_id", "blank-title", "blank-authors"])
+    def test_example_33_required_identity_missing(env, changes):
+        """Example 33 (R05): blank or invalid book_id, or blank title or authors:
+        rejected, no book inserted."""
+        e = env.run_rows(new_book(20033, **changes))
+>       counts_are(e, read=1, rejected=1)
+
+tests/test_ingest.py:381: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+entry = {'attention': [{'book_id': '20033', 'goodreads_book_id': '90020033', 'outcome': 'loaded', 'raw_isbn': '', ...}], 'chan...pped': 0, ...}, 'counts_by_issue': [{'action': 'no ISBN stored', 'issue': 'no ISBN in either column', 'rows': 1}], ...}
+read = 1, outcomes = {'rejected': 1}
+c = {'loaded': 1, 'read': 1, 'rejected': 0, 'skipped': 0, ...}, @py_assert0 = 1
+@py_assert2 = False, name = 'loaded'
+@py_assert4 = <built-in method get of dict object at 0x107e3de40>
+
+    def counts_are(entry, read, **outcomes):
+        c = entry[LOG_COUNTS]
+        assert c["read"] == read
+        for name in OUTCOMES:
+>           assert c[name] == outcomes.get(name, 0), "{}: expected {}, got {}".format(
+                name, outcomes.get(name, 0), c[name])
+E           AssertionError: loaded: expected 0, got 1
+E           assert 1 == 0
+E            +  where 0 = <built-in method get of dict object at 0x107e3de40>('loaded', 0)
+E            +    where <built-in method get of dict object at 0x107e3de40> = {'rejected': 1}.get
+
+tests/test_ingest.py:50: AssertionError
+----------------------------- Captured stdout call -----------------------------
+2026-11-06 16:22:39 CST  input-1.csv
+  read 1, loaded 1, updated 0, skipped 0 (already exist 0, duplicates in file 0), rejected 0, warnings 1
+  details: /var/folders/4k/h8qgc7yd653b1zd428bj14jc0000gn/T/ingest-test-3tf81erk/test-ingestion-log.json
+___________ test_example_33_required_identity_missing[blank-authors] ___________
+
+env = <conftest.Env object at 0x107d48c70>, changes = {'authors': '   '}
+
+    @pytest.mark.parametrize("changes", [
+        {"book_id": ""},
+        {"book_id": "abc"},
+        {"book_id": "12.5"},
+        {"title": ""},
+        {"authors": "   "},
+    ], ids=["blank-book_id", "nonnumeric-book_id", "fractional-book_id", "blank-title", "blank-authors"])
+    def test_example_33_required_identity_missing(env, changes):
+        """Example 33 (R05): blank or invalid book_id, or blank title or authors:
+        rejected, no book inserted."""
+        e = env.run_rows(new_book(20033, **changes))
+>       counts_are(e, read=1, rejected=1)
+
+tests/test_ingest.py:381: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+entry = {'attention': [{'book_id': '20033', 'goodreads_book_id': '90020033', 'outcome': 'loaded', 'raw_isbn': '', ...}], 'chan...pped': 0, ...}, 'counts_by_issue': [{'action': 'no ISBN stored', 'issue': 'no ISBN in either column', 'rows': 1}], ...}
+read = 1, outcomes = {'rejected': 1}
+c = {'loaded': 1, 'read': 1, 'rejected': 0, 'skipped': 0, ...}, @py_assert0 = 1
+@py_assert2 = False, name = 'loaded'
+@py_assert4 = <built-in method get of dict object at 0x107e0fb00>
+
+    def counts_are(entry, read, **outcomes):
+        c = entry[LOG_COUNTS]
+        assert c["read"] == read
+        for name in OUTCOMES:
+>           assert c[name] == outcomes.get(name, 0), "{}: expected {}, got {}".format(
+                name, outcomes.get(name, 0), c[name])
+E           AssertionError: loaded: expected 0, got 1
+E           assert 1 == 0
+E            +  where 0 = <built-in method get of dict object at 0x107e0fb00>('loaded', 0)
+E            +    where <built-in method get of dict object at 0x107e0fb00> = {'rejected': 1}.get
+
+tests/test_ingest.py:50: AssertionError
+----------------------------- Captured stdout call -----------------------------
+2026-11-06 16:22:39 CST  input-1.csv
+  read 1, loaded 1, updated 0, skipped 0 (already exist 0, duplicates in file 0), rejected 0, warnings 1
+  details: /var/folders/4k/h8qgc7yd653b1zd428bj14jc0000gn/T/ingest-test-svaind0m/test-ingestion-log.json
+=========================== short test summary info ============================
+FAILED tests/test_ingest.py::test_example_21_valid_but_mismatched_pair - Asse...
+FAILED tests/test_ingest.py::test_example_22_isbn_owned_by_another_book - Ass...
+FAILED tests/test_ingest.py::test_example_23_two_valid_mismatched_isbns - Ass...
+FAILED tests/test_ingest.py::test_example_24_exact_duplicate_in_one_file - As...
+FAILED tests/test_ingest.py::test_example_28_same_book_id_with_different_identity[title-A Different Title]
+FAILED tests/test_ingest.py::test_example_28_same_book_id_with_different_identity[authors-A Different Author]
+FAILED tests/test_ingest.py::test_example_30_no_goodreads_id_and_no_isbn - As...
+FAILED tests/test_ingest.py::test_example_31_two_new_books_claim_the_same_isbn
+FAILED tests/test_ingest.py::test_example_33_required_identity_missing[blank-book_id]
+FAILED tests/test_ingest.py::test_example_33_required_identity_missing[nonnumeric-book_id]
+FAILED tests/test_ingest.py::test_example_33_required_identity_missing[fractional-book_id]
+FAILED tests/test_ingest.py::test_example_33_required_identity_missing[blank-title]
+FAILED tests/test_ingest.py::test_example_33_required_identity_missing[blank-authors]
+======================== 13 failed, 33 passed in 7.44s =========================

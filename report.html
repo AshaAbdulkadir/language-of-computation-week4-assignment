@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ingestion Report</title>
+<style>
+  :root {
+    --bg: #faf9f7; --card: #ffffff; --text: #22201d; --muted: #6b655e;
+    --border: #e4e0da; --accent: #2f5d8a; --accent-text: #ffffff;
+    --ok-bg: #e6f2ea; --ok: #1f6b3a; --bad-bg: #fbe9e7; --bad: #a3302a;
+    --warn-bg: #fdf3dc; --warn: #8a5a00; --row-alt: #f6f4f1;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1a1917; --card: #24221f; --text: #ece9e4; --muted: #a8a197;
+      --border: #3a3733; --accent: #7fb0e0; --accent-text: #10161c;
+      --ok-bg: #1d3426; --ok: #8fd6a6; --bad-bg: #3d2220; --bad: #f2a29b;
+      --warn-bg: #3a3020; --warn: #f0c870; --row-alt: #2a2825;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text);
+         font: 15px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+  .wrap { max-width: 1100px; margin: 0 auto; padding: 24px 16px 64px; }
+  h1 { font-size: 1.6rem; margin: 0 0 4px; }
+  .intro { color: var(--muted); margin: 0 0 16px; }
+  .open { display: inline-block; background: var(--accent); color: var(--accent-text);
+          border: 0; border-radius: 8px; padding: 10px 16px; font: inherit; font-weight: 600; cursor: pointer; }
+  .open:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+  #file { position: absolute; width: 1px; height: 1px; opacity: 0; }
+  #status { margin: 12px 0 24px; color: var(--muted); }
+  #status.error { color: var(--bad); }
+  .run { background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+         padding: 20px; margin-bottom: 20px; }
+  .run h2 { font-size: 1.15rem; margin: 0; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .badge { font-size: 0.75rem; font-weight: 600; padding: 2px 10px; border-radius: 999px; }
+  .badge.completed { background: var(--ok-bg); color: var(--ok); }
+  .badge.failed { background: var(--bad-bg); color: var(--bad); }
+  .meta { display: grid; grid-template-columns: max-content 1fr; gap: 2px 12px; margin: 12px 0;
+          color: var(--muted); font-size: 0.875rem; }
+  .meta dd { margin: 0; overflow-wrap: anywhere; color: var(--text); }
+  .failure { background: var(--bad-bg); color: var(--bad); padding: 10px 12px; border-radius: 8px; }
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin: 16px 0; }
+  .stat { border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px; }
+  .stat .n { font-size: 1.5rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .stat .l { color: var(--muted); font-size: 0.8rem; }
+  .stat .sub { color: var(--muted); font-size: 0.75rem; }
+  .stat.rejected .n { color: var(--bad); }
+  .stat.warnings .n { color: var(--warn); }
+  details { border-top: 1px solid var(--border); padding: 10px 0; }
+  summary { cursor: pointer; font-weight: 600; }
+  .scroll { overflow-x: auto; margin-top: 10px; }
+  table { border-collapse: collapse; width: 100%; font-size: 0.85rem; }
+  th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  th { position: sticky; top: 0; background: var(--card); }
+  tbody tr:nth-child(even) { background: var(--row-alt); }
+  td.num { font-variant-numeric: tabular-nums; text-align: right; }
+  code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.82rem; overflow-wrap: anywhere; }
+  .pill { display: inline-block; font-size: 0.75rem; padding: 1px 8px; border-radius: 999px; font-weight: 600; }
+  .pill.rejected { background: var(--bad-bg); color: var(--bad); }
+  .pill.skipped { background: var(--row-alt); color: var(--muted); border: 1px solid var(--border); }
+  .pill.loaded, .pill.updated { background: var(--ok-bg); color: var(--ok); }
+  ul.w { margin: 0; padding-left: 16px; }
+  .empty { color: var(--muted); margin: 8px 0 0; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Ingestion Report</h1>
+  <p class="intro">Shows every run recorded in <code>ingestion-log.json</code>, newest first. The file is read in your browser and is not uploaded anywhere.</p>
+  <label class="open" for="file" tabindex="0" id="openLabel">Open ingestion-log.json</label>
+  <input type="file" id="file" accept=".json,application/json">
+  <p id="status" role="status">No log opened yet. Choose ingestion-log.json from the week3-assignment folder.</p>
+  <main id="runs"></main>
+</div>
+<script>
+(function () {
+  "use strict";
+  var input = document.getElementById("file");
+  var label = document.getElementById("openLabel");
+  var statusEl = document.getElementById("status");
+  var runsEl = document.getElementById("runs");
+
+  label.addEventListener("keydown", function (e) {
+    if (e.key === "Enter" || e.key === " ") { e.preventDefault(); input.click(); }
+  });
+
+  input.addEventListener("change", function () {
+    var file = input.files && input.files[0];
+    if (!file) return;
+    var reader = new FileReader();
+    reader.onload = function () {
+      var runs;
+      try { runs = JSON.parse(reader.result); }
+      catch (err) { return showError(file.name + " is not valid JSON: " + err.message); }
+      if (!Array.isArray(runs)) return showError(file.name + " is not a list of runs.");
+      render(runs, file.name);
+    };
+    reader.onerror = function () { showError("The file could not be read."); };
+    reader.readAsText(file);
+    input.value = "";
+  });
+
+  function showError(msg) {
+    statusEl.textContent = msg;
+    statusEl.className = "error";
+    runsEl.textContent = "";
+  }
+
+  function el(tag, attrs, children) {
+    var node = document.createElement(tag);
+    if (attrs) Object.keys(attrs).forEach(function (k) {
+      if (k === "text") node.textContent = attrs[k];
+      else if (k === "class") node.className = attrs[k];
+      else node.setAttribute(k, attrs[k]);
+    });
+    (children || []).forEach(function (c) {
+      if (c === null || c === undefined) return;
+      node.appendChild(typeof c === "string" ? document.createTextNode(c) : c);
+    });
+    return node;
+  }
+
+  function fmt(n) { return typeof n === "number" ? n.toLocaleString("en-US") : "0"; }
+  function plural(n, word) { return fmt(n) + " " + word + (n === 1 ? "" : "s"); }
+
+  function render(runs, name) {
+    runsEl.textContent = "";
+    statusEl.className = "";
+    statusEl.textContent = name + ": " + plural(runs.length, "run") + ", newest first.";
+    for (var i = runs.length - 1; i >= 0; i--) runsEl.appendChild(renderRun(runs[i], i + 1, runs.length));
+  }
+
+  function renderRun(run, number, total) {
+    var status = run.status === "completed" ? "completed" : "failed";
+    var section = el("section", { class: "run", "aria-label": "Run " + number });
+    section.appendChild(el("h2", null, [
+      "Run " + number + " of " + total + ": " + (run.run_time || "unknown time"),
+      el("span", { class: "badge " + status, text: status === "completed" ? "Completed" : "Failed" })
+    ]));
+    section.appendChild(el("dl", { class: "meta" }, [
+      el("dt", { text: "File" }), el("dd", { text: run.file || "" }),
+      el("dt", { text: "Path" }), el("dd", null, [el("code", { text: run.file_path || "" })]),
+      el("dt", { text: "SHA-256" }), el("dd", null, [el("code", { text: run.sha256 || "not available" })])
+    ]));
+    if (status === "failed") {
+      section.appendChild(el("p", { class: "failure", text: "Reason: " + (run.failure_reason || "not recorded") + ". The database was not changed." }));
+      return section;
+    }
+    var c = run.counts || {};
+    section.appendChild(el("div", { class: "stats" }, [
+      stat("Read", c.read), stat("Loaded", c.loaded), stat("Updated", c.updated),
+      stat("Skipped", c.skipped, "already exist " + fmt(c.skipped_already_exist) + ", duplicates in file " + fmt(c.skipped_duplicate_in_file)),
+      stat("Rejected", c.rejected, null, "rejected"),
+      stat("Warnings", c.warnings, null, "warnings")
+    ]));
+
+    var attention = run.attention || [];
+    var notLoaded = attention.filter(function (a) { return a.outcome === "skipped" || a.outcome === "rejected"; });
+    var warned = attention.filter(function (a) { return (a.outcome === "loaded" || a.outcome === "updated") && a.warnings && a.warnings.length; });
+
+    section.appendChild(lazy("Rows not loaded (skipped and rejected)", notLoaded, true,
+      ["Row", "book_id", "goodreads_book_id", "Title", "Outcome", "Reason", "Raw isbn", "Raw isbn13", "Warnings"],
+      function (a) { return [num(a.row), a.book_id, a.goodreads_book_id, a.title, pill(a.outcome), a.reason, code(a.raw_isbn), code(a.raw_isbn13), warnList(a.warnings)]; }));
+    section.appendChild(lazy("Warnings on loaded and updated rows", warned, false,
+      ["Row", "book_id", "goodreads_book_id", "Title", "Outcome", "Raw isbn", "Raw isbn13", "Warnings"],
+      function (a) { return [num(a.row), a.book_id, a.goodreads_book_id, a.title, pill(a.outcome), code(a.raw_isbn), code(a.raw_isbn13), warnList(a.warnings)]; }));
+    section.appendChild(lazy("Counts by issue", run.counts_by_issue || [], false,
+      ["Issue", "What was done", "Rows"],
+      function (x) { return [x.issue, x.action, num(x.rows)]; }));
+    section.appendChild(lazy("Changes to existing books", run.changes || [], false,
+      ["Row", "book_id", "goodreads_book_id", "Title", "Field", "Old value", "New value"],
+      function (x) { return [num(x.row), x.book_id, x.goodreads_book_id, x.title, code(x.field), code(x.old_value), code(x.new_value)]; }));
+    section.appendChild(lazy("Repairs", run.repairs || [], false,
+      ["Row", "book_id", "goodreads_book_id", "Title", "Field", "Raw value", "Repaired value", "Rule"],
+      function (x) { return [num(x.row), x.book_id, x.goodreads_book_id, x.title, code(x.field), code(x.raw_value), code(x.repaired_value), x.rule]; }));
+    return section;
+  }
+
+  function stat(label, n, sub, cls) {
+    return el("div", { class: "stat" + (cls ? " " + cls : "") }, [
+      el("div", { class: "n", text: fmt(n) }), el("div", { class: "l", text: label }),
+      sub ? el("div", { class: "sub", text: sub }) : null
+    ]);
+  }
+  function num(n) { var td = el("span", { text: n === undefined || n === null ? "" : String(n) }); td.dataset.num = "1"; return td; }
+  function code(v) { return v === null || v === undefined || v === "" ? el("span", { class: "empty", text: "blank" }) : el("code", { text: String(v) }); }
+  function pill(o) { return el("span", { class: "pill " + o, text: o }); }
+  function warnList(ws) {
+    if (!ws || !ws.length) return "";
+    return el("ul", { class: "w" }, ws.map(function (w) { return el("li", { text: w.issue + " (" + w.action + ")" }); }));
+  }
+
+  // Tables are built the first time a section is opened, so large logs stay fast.
+  function lazy(title, items, openWhenSmall, headers, toCells) {
+    var d = el("details", null, [el("summary", { text: title + " (" + fmt(items.length) + ")" })]);
+    var built = false;
+    function build() {
+      if (built) return;
+      built = true;
+      if (!items.length) { d.appendChild(el("p", { class: "empty", text: "None." })); return; }
+      var tbody = el("tbody");
+      var frag = document.createDocumentFragment();
+      items.forEach(function (item) {
+        var tr = el("tr");
+        toCells(item).forEach(function (v) {
+          var td = el("td");
+          if (v && v.nodeType) { if (v.dataset && v.dataset.num) td.className = "num"; td.appendChild(v); }
+          else td.textContent = v === null || v === undefined ? "" : String(v);
+          tr.appendChild(td);
+        });
+        frag.appendChild(tr);
+      });
+      tbody.appendChild(frag);
+      var thead = el("thead", null, [el("tr", null, headers.map(function (h) { return el("th", { scope: "col", text: h }); }))]);
+      d.appendChild(el("div", { class: "scroll" }, [el("table", null, [thead, tbody])]));
+    }
+    d.addEventListener("toggle", function () { if (d.open) build(); });
+    if (openWhenSmall && items.length > 0 && items.length <= 50) { d.open = true; build(); }
+    return d;
+  }
+})();
+</script>
+</body>
+</html>
