@@ -1,4 +1,4 @@
-"""Tests for ingest.py, taken only from rules.md (version 1.0, 2026-11-06).
+"""Tests for ingest.py, taken only from rules.md (version 1.1, 2026-11-08).
 
 Each example test matches one row of the table in rules.md section 7. As the
 table says, a row is a new book with a unique valid book_id, a nonblank title
@@ -466,3 +466,113 @@ def test_same_file_on_empty_database_gives_same_database(env, fixed_clock):
     os.remove(env.db_path)
     env.run(BOOKS_CSV)
     assert env.dump() == first
+
+
+# ---------------------------------------------------------------------------
+# Clarification examples, rules.md section 8 (version 1.1)
+# ---------------------------------------------------------------------------
+
+def test_example_36_rounded_product_code_not_used(env):
+    """Example 36 (C1): a rounded product code gives no ISBN-13; warn."""
+    e = load_one(env, 20036, "189221301X", "6.4557300301e+11")
+    isbns_are(env, 20036, "189221301X", None)
+    warned(e, 20036)
+
+
+def test_example_37_rounded_9790_value_not_used(env):
+    """Example 37 (C1, C3): pad the ISBN-10; a rounded 9790 value gives no ISBN-13; warn."""
+    e = load_one(env, 20037, "6280560", "9.79000767239e+12")
+    isbns_are(env, 20037, "0006280560", None)
+    warned(e, 20037)
+
+
+def test_example_38_unconfirmed_decimal_not_derived(env):
+    """Example 38 (C2): an unconfirmed decimal value; no derivation; warn."""
+    e = load_one(env, 20038, "0439139600", "0439139601.0")
+    isbns_are(env, 20038, "0439139600", None)
+    warned(e, 20038)
+
+
+def test_example_39_unconfirmed_decimal_product_code_not_derived(env):
+    """Example 39 (C2): an unconfirmed decimal product code; no derivation; warn."""
+    e = load_one(env, 20039, "553609416", "76783609419.0")
+    isbns_are(env, 20039, "0553609416", None)
+    warned(e, 20039)
+
+
+def test_example_40_decimal_confirmed_after_padding(env):
+    """Example 40 (C2): R17 confirms the decimal value after padding; derive and log."""
+    e = load_one(env, 20040, "195170342", "195170342.0")
+    isbns_are(env, 20040, "0195170342", "9780195170344")
+    repairs_logged(e, 20040, "9780195170344")
+
+
+def test_example_41_invalid_979_value_flagged(env):
+    """Example 41 (C3): an invalid 979 value contradicts the ISBN-10; warn and flag."""
+    e = load_one(env, 20041, "0439139600", "9798351220410")
+    isbns_are(env, 20041, "0439139600", None)
+    warned(e, 20041)
+    flagged(e, 20041)
+
+
+def test_example_42_9790_value_treated_as_product_code(env):
+    """Example 42 (C3): a 9790 ISMN is a product code; derive; warn and log."""
+    e = load_one(env, 20042, "0439139600", "9790439139601")
+    isbns_are(env, 20042, "0439139600", "9780439139601")
+    warned(e, 20042)
+    repairs_logged(e, 20042, "9780439139601")
+
+
+def test_example_43_conflicting_pair_for_book_without_isbns(env):
+    """Example 43 (C4): no ISBN accepted; skipped; flagged."""
+    env.run_rows(new_book(20043, "", ""))
+    e = env.run_rows(new_book(20043, "1555550126", "9781555550134"))
+    counts_are(e, read=1, skipped=1)
+    isbns_are(env, 20043, None, None)
+    flagged(e, 20043)
+
+
+def test_example_44_blank_raw_isbn_stored_as_empty_text(env):
+    """Example 44 (C5): the blank raw isbn is stored as empty text; cleaned ISBN-10 is NULL."""
+    load_one(env, 20044, "", "9798351220413")
+    isbns_are(env, 20044, None, "9798351220413")
+    book = env.book(20044)
+    assert book["isbn"] == "", "raw isbn should be empty text, got {!r}".format(book["isbn"])
+    assert book["isbn13"] == "9798351220413"
+
+
+def test_example_45_formatting_only_duplicate_in_one_file(env):
+    """Example 45 (C6): first row loaded; second skipped as a normalized duplicate."""
+    e = env.run_rows(new_book(20045, "0-439-13960-0", ""), new_book(20045, "0439139600", ""))
+    counts_are(e, read=2, loaded=1, skipped=1)
+    isbns_are(env, 20045, "0439139600", "9780439139601")
+    reason_contains(e, 20045, "normalized duplicate in input")
+
+
+def test_example_46_exact_copy_of_rejected_row_skipped(env):
+    """Example 46 (C7): the first copy is rejected (R26), the second skipped as an exact duplicate."""
+    env.run_rows(new_book(20046, "0439139600", ""))
+    before = env.book(20046)
+    row = new_book(20046, "1620014750", "")
+    e = env.run_rows(row, list(row))
+    counts_are(e, read=2, rejected=1, skipped=1)
+    reason_contains(e, 20046, "exact duplicate in input")
+    assert env.book(20046) == before
+
+
+def test_example_47_fill_that_contradicts_other_stored_isbn_rejected(env):
+    """Example 47 (C8): the fill contradicts the stored ISBN-13; rejected; nothing changes."""
+    env.run_rows(new_book(20047, "1854433017", "9780062398123"))
+    isbns_are(env, 20047, None, "9780062398123")
+    before = env.book(20047)
+    e = env.run_rows(new_book(20047, "0439139600", "195170342.0"))
+    counts_are(e, read=1, rejected=1)
+    assert env.book(20047) == before
+
+
+def test_example_48_valid_isbn10_moved_from_isbn13_column(env):
+    """Example 48 (C9): move the valid ISBN-10, derive the ISBN-13, warn about the invalid isbn."""
+    e = load_one(env, 20048, "1854433017", "0439139600")
+    isbns_are(env, 20048, "0439139600", "9780439139601")
+    warned(e, 20048)
+    repairs_logged(e, 20048, "0439139600", "9780439139601")

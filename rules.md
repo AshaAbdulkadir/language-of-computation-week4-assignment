@@ -3,6 +3,7 @@
 **Course:** MSAI-5523 — Language of Computation  
 **Partners:** George (`Georgec4444`) and Asha (`AshaAbdulkadir`)  
 **Agreed version:** 1.0 — November 6, 2026  
+**Version 1.1:** 2026-11-08. Adds section 8, clarifications C1 to C9 and examples 36 to 48, from George's nine clarification questions and Asha's answers. Version 1.1 is shared once George holds a byte-identical copy.  
 **Status:** One shared specification for both students' independent Module 4 implementations and pytest suites.
 
 ## Purpose and governing principle
@@ -174,3 +175,47 @@ Warnings, repairs, and review flags are **additional attributes**, not fifth out
 | 33 | A row has a blank/invalid `book_id` or a blank `title` or `authors` | Not assigned | Not assigned | Rejected | Required identity missing; no accepted book inserted. |
 | 34 | Existing book lacks a cleaned ISBN; same book later supplies a valid nonconflicting ISBN | Fill valid ISBN | Fill/derive permitted counterpart | Updated | Safe ISBN improvement; log old and new values. |
 | 35 | `isbn=812971060`; `isbn13=9.78081297106e+12` (*Reading Lolita in Tehran*) | NULL | NULL | Loaded | Invalid ISBN-10 and unsupported rounded ISBN-13; do not change `0` to `X`; warn. |
+
+---
+
+## 8. Clarifications (version 1.1)
+
+These clarifications settle nine cases that version 1.0 left open. Where a clarification applies, it governs over the wording of the rule it names.
+
+**C1 (R16, R19 safeguard 1): Rounded scientific notation.** A scientific-notation value is **rounded** only when it shows fewer significant digits than the whole number it represents. A value that shows all of its digits is **exact**: if it is not a valid ISBN-13, it is a product code or unusable value under R18 and R19, as in example 17. A rounded value that is not a `978` or `979` ISBN-13 candidate can never pass R16, so no ISBN-13 is derived for it: the cleaned ISBN-13 is NULL with a warning.
+
+**C2 (R17, R19): Decimal values.** A decimal-looking `isbn13` value is decided by R17 alone. R17's comparison applies the R12 repairs, including leading-zero padding, to the digits before `.0`. If R17 does not confirm the value, the cleaned ISBN-13 is NULL with a warning, and R19 does not derive an ISBN-13 from the row's ISBN-10.
+
+**C3 (R11, R19): Invalid `979` and `9790` values.** A 13-digit `979` value (not `9790`) that fails its checksum, next to a valid ISBN-10, is a contradiction, because a valid ISBN-10 only converts to a `978` ISBN-13: keep the ISBN-10, leave the cleaned ISBN-13 NULL, warn and flag for review. A `9790` value is an ISMN, not an ISBN (R11), and is handled like a product code under R19, as in example 17. A rounded `9790` value follows C1.
+
+**C4 (R21, R29): Conflicting pair for an existing book with no ISBNs.** If an existing book has no cleaned ISBNs and an incoming row for it presents a conflicting ISBN pair, no ISBN is accepted and the row is flagged for review. Its outcome follows R29: **skipped**, or **updated** if an approved field changes.
+
+**C5 (R03): Blank raw ISBN cells.** The raw `isbn` and `isbn13` values are stored exactly as received, so a blank cell is stored as empty text. Cleaned ISBNs that are absent are NULL.
+
+**C6 (R23, R24, R34): Formatting-only duplicates.** When two rows in one file have the same `book_id` and differ only in values that normalize to the same result, the earliest is processed and each later one is **skipped** with the reason `normalized duplicate in input`. This reason is separate from `exact duplicate in input` and `already exists`.
+
+**C7 (R23): Copies of a rejected row.** Exact duplicates are detected after the R38 field-count check and the R05 required-identity check. A later exact copy of a row is **skipped** as `exact duplicate in input` even when the first copy was rejected for another reason. Rows that fail R38 or R05 are rejected every time.
+
+**C8 (R25, R26): A fill that contradicts the other stored ISBN.** If an incoming valid ISBN would fill an empty cleaned ISBN field of an existing book but does not correspond to the book's other stored cleaned ISBN, it is not a nonconflicting fill. **Reject the incoming row for review**, keep the stored record unchanged, and do not update other fields from that row, as in R26.
+
+**C9 (R13, R19 safeguard 4): Invalid `isbn` with a valid ISBN-10 in `isbn13`.** R13 applies: move the valid ISBN-10 found in `isbn13` into the cleaned ISBN-10 and derive its `978` ISBN-13. Keep both raw values, and log a warning for the invalid `isbn` value, the move and the derivation. No check digit is calculated.
+
+### Examples for the clarifications
+
+These follow the same reading as the table in section 7.
+
+| # | Input / situation | Expected cleaned ISBN-10 | Expected cleaned ISBN-13 | Primary outcome | Required action or explanation |
+|---|---|---|---|---|---|
+| 36 | `isbn=189221301X`; `isbn13=6.4557300301e+11` | `189221301X` | NULL | Loaded | Rounded product code (11 digits shown of 12); no ISBN-13 derived; warn (C1). |
+| 37 | `isbn=6280560`; `isbn13=9.79000767239e+12` (*The Great Divorce*) | `0006280560` | NULL | Loaded | Pad ISBN-10. Rounded `9790` value; no ISBN-13 derived; warn (C1, C3). |
+| 38 | `isbn=0439139600`; `isbn13=0439139601.0` | `0439139600` | NULL | Loaded | Unconfirmed decimal value; no derivation; warn (C2). |
+| 39 | `isbn=553609416`; `isbn13=76783609419.0` | `0553609416` | NULL | Loaded | Unconfirmed decimal product code; no derivation; warn (C2). |
+| 40 | `isbn=195170342`; `isbn13=195170342.0` (*Washington's Crossing*) | `0195170342` | `9780195170344` | Loaded | R17 confirms after padding; derive ISBN-13; log (C2). |
+| 41 | `isbn=0439139600`; `isbn13=9798351220410` | `0439139600` | NULL | Loaded | Invalid `979` value contradicts the ISBN-10; warn and flag (C3). |
+| 42 | `isbn=0439139600`; `isbn13=9790439139601` | `0439139600` | `9780439139601` | Loaded | `9790` ISMN treated as a product code; derive; warn and log (C3). |
+| 43 | Existing book with no cleaned ISBNs; same book later has `isbn=1555550126`, `isbn13=9781555550134`, other values unchanged | NULL | NULL | Skipped | Conflicting pair; no ISBN accepted; flag (C4). |
+| 44 | `isbn` blank; `isbn13=9798351220413` | NULL | `9798351220413` | Loaded | Raw `isbn` stored as empty text (C5). |
+| 45 | Two rows for the same new `book_id` in one file: `isbn=0-439-13960-0`, then `isbn=0439139600`, all other values the same | `0439139600` | `9780439139601` | Loaded, then Skipped | Second row: `normalized duplicate in input` (C6). |
+| 46 | Existing book has `0439139600`; a later file has two identical rows for it with `isbn=1620014750` | Preserve existing | Preserve existing | Rejected, then Skipped | First copy rejected (R26); second `exact duplicate in input` (C7). |
+| 47 | Existing book has cleaned ISBN-10 NULL (raw `1854433017`) and ISBN-13 `9780062398123`; later row has `isbn=0439139600`, `isbn13=195170342.0` | Preserve existing | Preserve existing | Rejected | `0439139600` would fill the empty ISBN-10 but contradicts `9780062398123`; reject for review (C8). |
+| 48 | `isbn=1854433017`; `isbn13=0439139600` | `0439139600` | `9780439139601` | Loaded | Move the valid ISBN-10 from `isbn13`; derive ISBN-13; warn about the invalid `isbn` (C9). |

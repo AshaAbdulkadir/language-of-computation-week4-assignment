@@ -1,7 +1,7 @@
 [
   {
-    "run_date": "2026-11-06",
-    "run_time": "2026-11-06 16:44:54 -0600 CST",
+    "run_date": "2026-11-08",
+    "run_time": "2026-11-08 14:01:20 -0600 CST",
     "status": "completed",
     "file": "books.csv",
     "file_path": "/Users/ashaabdulkadir/workspace/language-of-computation/week4-assignment/books.csv",
@@ -39,9 +39,9 @@
         "rows": 131
       },
       {
-        "issue": "isbn13: scientific notation code that is not an ISBN-13",
+        "issue": "isbn13: rounded scientific notation code; digits lost, not an ISBN-13 (C1)",
         "action": "loaded",
-        "rows": 29
+        "rows": 26
       },
       {
         "issue": "derived missing ISBN-13 from ISBN-10 (R15)",
@@ -66,15 +66,20 @@
       {
         "issue": "derived ISBN-13 from the valid ISBN-10 (R19)",
         "action": "repaired",
-        "rows": 7
+        "rows": 3
       },
       {
-        "issue": "isbn13: decimal value not confirmed by this row's ISBN-10 (R17)",
+        "issue": "isbn13: decimal value not confirmed by this row's ISBN-10; not used (R17, C2)",
         "action": "loaded",
         "rows": 3
       },
       {
-        "issue": "isbn13 held this row's ISBN-10 followed by .0; confirmed, ISBN-13 derived (R17)",
+        "issue": "isbn13: scientific notation code that is not an ISBN-13",
+        "action": "loaded",
+        "rows": 3
+      },
+      {
+        "issue": "isbn13 held this row's ISBN-10 followed by .0; confirmed, ISBN-13 derived (R17, C2)",
         "action": "repaired",
         "rows": 1
       },
@@ -18269,17 +18274,6 @@
         "rule": "restored leading zeros (R12)"
       },
       {
-        "line": 959,
-        "row": 959,
-        "book_id": "958",
-        "goodreads_book_id": "3579",
-        "title": "The Complete Anne of Green Gables Boxed Set (Anne of Green Gables, #1-8)",
-        "field": "isbn_13_clean",
-        "raw_value": "76783609419.0",
-        "repaired_value": "9780553609417",
-        "rule": "derived ISBN-13 from the valid ISBN-10 (R19)"
-      },
-      {
         "line": 960,
         "row": 960,
         "book_id": "959",
@@ -20984,17 +20978,6 @@
         "raw_value": "6280560",
         "repaired_value": "0006280560",
         "rule": "restored leading zeros (R12)"
-      },
-      {
-        "line": 1107,
-        "row": 1107,
-        "book_id": "1106",
-        "goodreads_book_id": "17267",
-        "title": "The Great Divorce",
-        "field": "isbn_13_clean",
-        "raw_value": "9.79000767239e+12",
-        "repaired_value": "9780006280569",
-        "rule": "derived ISBN-13 from the valid ISBN-10 (R19)"
       },
       {
         "line": 1108,
@@ -109382,17 +109365,6 @@
         "rule": "restored leading zeros (R12)"
       },
       {
-        "line": 6143,
-        "row": 6143,
-        "book_id": "6142",
-        "goodreads_book_id": "97862",
-        "title": "One Tuesday Morning (9/11, #1)",
-        "field": "isbn_13_clean",
-        "raw_value": "25986247522.0",
-        "repaired_value": "9780310247524",
-        "rule": "derived ISBN-13 from the valid ISBN-10 (R19)"
-      },
-      {
         "line": 6144,
         "row": 6144,
         "book_id": "6143",
@@ -114517,17 +114489,6 @@
         "raw_value": "842319476",
         "repaired_value": "0842319476",
         "rule": "restored leading zeros (R12)"
-      },
-      {
-        "line": 6438,
-        "row": 6438,
-        "book_id": "6437",
-        "goodreads_book_id": "95607",
-        "title": "Unveiled: Tamar (Lineage of Grace #1)",
-        "field": "isbn_13_clean",
-        "raw_value": "31809014745.0",
-        "repaired_value": "9780842319478",
-        "rule": "derived ISBN-13 from the valid ISBN-10 (R19)"
       },
       {
         "line": 6439,
@@ -144007,7 +143968,7 @@
         "field": "isbn_13_clean",
         "raw_value": "195170342.0",
         "repaired_value": "9780195170344",
-        "rule": "isbn13 held this row's ISBN-10 followed by .0; confirmed, ISBN-13 derived (R17)"
+        "rule": "isbn13 held this row's ISBN-10 followed by .0; confirmed, ISBN-13 derived (R17, C2)"
       },
       {
         "line": 8176,
@@ -174994,7 +174955,7 @@
         "review": false,
         "warnings": [
           {
-            "issue": "isbn13: decimal value not confirmed by this row's ISBN-10 (R17)",
+            "issue": "isbn13: decimal value not confirmed by this row's ISBN-10; not used (R17, C2)",
             "field": "isbn13",
             "raw_value": "76783609419.0",
             "action": "not used as a cleaned ISBN"
@@ -175003,7 +174964,7 @@
         "raw_isbn": "553609416",
         "raw_isbn13": "76783609419.0",
         "isbn10_clean": "0553609416",
-        "isbn13_clean": "9780553609417"
+        "isbn13_clean": null
       },
       {
         "line": 963,
@@ -175126,7 +175087,7 @@
         "review": false,
         "warnings": [
           {
-            "issue": "isbn13: scientific notation code that is not an ISBN-13",
+            "issue": "isbn13: rounded scientific notation code; digits lost, not an ISBN-13 (C1)",
             "field": "isbn13",
             "raw_value": "9.79000767239e+12",
             "action": "not used as a cleaned ISBN"
@@ -175135,7 +175096,7 @@
         "raw_isbn": "6280560",
         "raw_isbn13": "9.79000767239e+12",
         "isbn10_clean": "0006280560",
-        "isbn13_clean": "9780006280569"
+        "isbn13_clean": null
       },
       {
         "line": 1111,
@@ -175236,7 +175197,7 @@
         "review": false,
         "warnings": [
           {
-            "issue": "isbn13: scientific notation code that is not an ISBN-13",
+            "issue": "isbn13: rounded scientific notation code; digits lost, not an ISBN-13 (C1)",
             "field": "isbn13",
             "raw_value": "2.94001623192e+12",
             "action": "not used as a cleaned ISBN"
@@ -177026,7 +176987,7 @@
         "review": false,
         "warnings": [
           {
-            "issue": "isbn13: scientific notation code that is not an ISBN-13",
+            "issue": "isbn13: rounded scientific notation code; digits lost, not an ISBN-13 (C1)",
             "field": "isbn13",
             "raw_value": "2.94001144494e+12",
             "action": "not used as a cleaned ISBN"
@@ -177450,7 +177411,7 @@
         "review": false,
         "warnings": [
           {
-            "issue": "isbn13: scientific notation code that is not an ISBN-13",
+            "issue": "isbn13: rounded scientific notation code; digits lost, not an ISBN-13 (C1)",
             "field": "isbn13",
             "raw_value": "2.94001497963e+12",
             "action": "not used as a cleaned ISBN"
@@ -177560,7 +177521,7 @@
         "review": false,
         "warnings": [
           {
-            "issue": "isbn13: scientific notation code that is not an ISBN-13",
+            "issue": "isbn13: rounded scientific notation code; digits lost, not an ISBN-13 (C1)",
             "field": "isbn13",
             "raw_value": "2.94001635694e+12",
             "action": "not used as a cleaned ISBN"
@@ -178056,7 +178017,7 @@
         "review": false,
         "warnings": [
           {
-            "issue": "isbn13: scientific notation code that is not an ISBN-13",
+            "issue": "isbn13: rounded scientific notation code; digits lost, not an ISBN-13 (C1)",
             "field": "isbn13",
             "raw_value": "2.94001513629e+12",
             "action": "not used as a cleaned ISBN"
@@ -178882,7 +178843,7 @@
         "review": false,
         "warnings": [
           {
-            "issue": "isbn13: scientific notation code that is not an ISBN-13",
+            "issue": "isbn13: rounded scientific notation code; digits lost, not an ISBN-13 (C1)",
             "field": "isbn13",
             "raw_value": "2.94004498098e+12",
             "action": "not used as a cleaned ISBN"
@@ -179636,7 +179597,7 @@
         "review": false,
         "warnings": [
           {
-            "issue": "isbn13: scientific notation code that is not an ISBN-13",
+            "issue": "isbn13: rounded scientific notation code; digits lost, not an ISBN-13 (C1)",
             "field": "isbn13",
             "raw_value": "2.94001549587e+12",
             "action": "not used as a cleaned ISBN"
@@ -179658,7 +179619,7 @@
         "review": false,
         "warnings": [
           {
-            "issue": "isbn13: scientific notation code that is not an ISBN-13",
+            "issue": "isbn13: rounded scientific notation code; digits lost, not an ISBN-13 (C1)",
             "field": "isbn13",
             "raw_value": "2.94001624931e+12",
             "action": "not used as a cleaned ISBN"
@@ -180792,7 +180753,7 @@
         "review": false,
         "warnings": [
           {
-            "issue": "isbn13: scientific notation code that is not an ISBN-13",
+            "issue": "isbn13: rounded scientific notation code; digits lost, not an ISBN-13 (C1)",
             "field": "isbn13",
             "raw_value": "2.94001631951e+12",
             "action": "not used as a cleaned ISBN"
@@ -180814,7 +180775,7 @@
         "review": false,
         "warnings": [
           {
-            "issue": "isbn13: scientific notation code that is not an ISBN-13",
+            "issue": "isbn13: rounded scientific notation code; digits lost, not an ISBN-13 (C1)",
             "field": "isbn13",
             "raw_value": "2.94001648708e+12",
             "action": "not used as a cleaned ISBN"
@@ -180946,7 +180907,7 @@
         "review": false,
         "warnings": [
           {
-            "issue": "isbn13: scientific notation code that is not an ISBN-13",
+            "issue": "isbn13: rounded scientific notation code; digits lost, not an ISBN-13 (C1)",
             "field": "isbn13",
             "raw_value": "2.94014886112e+12",
             "action": "not used as a cleaned ISBN"
@@ -181540,7 +181501,7 @@
         "review": false,
         "warnings": [
           {
-            "issue": "isbn13: scientific notation code that is not an ISBN-13",
+            "issue": "isbn13: rounded scientific notation code; digits lost, not an ISBN-13 (C1)",
             "field": "isbn13",
             "raw_value": "6.22110201718e+12",
             "action": "not used as a cleaned ISBN"
@@ -181782,7 +181743,7 @@
         "review": false,
         "warnings": [
           {
-            "issue": "isbn13: scientific notation code that is not an ISBN-13",
+            "issue": "isbn13: rounded scientific notation code; digits lost, not an ISBN-13 (C1)",
             "field": "isbn13",
             "raw_value": "2.94001655433e+12",
             "action": "not used as a cleaned ISBN"
@@ -182068,7 +182029,7 @@
         "review": false,
         "warnings": [
           {
-            "issue": "isbn13: scientific notation code that is not an ISBN-13",
+            "issue": "isbn13: rounded scientific notation code; digits lost, not an ISBN-13 (C1)",
             "field": "isbn13",
             "raw_value": "2.94001497768e+12",
             "action": "not used as a cleaned ISBN"
@@ -182552,7 +182513,7 @@
         "review": false,
         "warnings": [
           {
-            "issue": "isbn13: decimal value not confirmed by this row's ISBN-10 (R17)",
+            "issue": "isbn13: decimal value not confirmed by this row's ISBN-10; not used (R17, C2)",
             "field": "isbn13",
             "raw_value": "25986247522.0",
             "action": "not used as a cleaned ISBN"
@@ -182561,7 +182522,7 @@
         "raw_isbn": "310247527",
         "raw_isbn13": "25986247522.0",
         "isbn10_clean": "0310247527",
-        "isbn13_clean": "9780310247524"
+        "isbn13_clean": null
       },
       {
         "line": 6146,
@@ -182910,7 +182871,7 @@
         "review": false,
         "warnings": [
           {
-            "issue": "isbn13: scientific notation code that is not an ISBN-13",
+            "issue": "isbn13: rounded scientific notation code; digits lost, not an ISBN-13 (C1)",
             "field": "isbn13",
             "raw_value": "2.94001266893e+12",
             "action": "not used as a cleaned ISBN"
@@ -183026,7 +182987,7 @@
         "review": false,
         "warnings": [
           {
-            "issue": "isbn13: scientific notation code that is not an ISBN-13",
+            "issue": "isbn13: rounded scientific notation code; digits lost, not an ISBN-13 (C1)",
             "field": "isbn13",
             "raw_value": "2.94014954334e+12",
             "action": "not used as a cleaned ISBN"
@@ -183114,7 +183075,7 @@
         "review": false,
         "warnings": [
           {
-            "issue": "isbn13: decimal value not confirmed by this row's ISBN-10 (R17)",
+            "issue": "isbn13: decimal value not confirmed by this row's ISBN-10; not used (R17, C2)",
             "field": "isbn13",
             "raw_value": "31809014745.0",
             "action": "not used as a cleaned ISBN"
@@ -183123,7 +183084,7 @@
         "raw_isbn": "842319476",
         "raw_isbn13": "31809014745.0",
         "isbn10_clean": "0842319476",
-        "isbn13_clean": "9780842319478"
+        "isbn13_clean": null
       },
       {
         "line": 6465,
@@ -183444,7 +183405,7 @@
         "review": false,
         "warnings": [
           {
-            "issue": "isbn13: scientific notation code that is not an ISBN-13",
+            "issue": "isbn13: rounded scientific notation code; digits lost, not an ISBN-13 (C1)",
             "field": "isbn13",
             "raw_value": "2.94001328325e+12",
             "action": "not used as a cleaned ISBN"
@@ -185370,7 +185331,7 @@
         "review": false,
         "warnings": [
           {
-            "issue": "isbn13: scientific notation code that is not an ISBN-13",
+            "issue": "isbn13: rounded scientific notation code; digits lost, not an ISBN-13 (C1)",
             "field": "isbn13",
             "raw_value": "2.94004447015e+12",
             "action": "not used as a cleaned ISBN"
@@ -186822,7 +186783,7 @@
         "review": false,
         "warnings": [
           {
-            "issue": "isbn13: scientific notation code that is not an ISBN-13",
+            "issue": "isbn13: rounded scientific notation code; digits lost, not an ISBN-13 (C1)",
             "field": "isbn13",
             "raw_value": "6.22110201942e+12",
             "action": "not used as a cleaned ISBN"
@@ -188110,7 +188071,7 @@
         "review": false,
         "warnings": [
           {
-            "issue": "isbn13: scientific notation code that is not an ISBN-13",
+            "issue": "isbn13: rounded scientific notation code; digits lost, not an ISBN-13 (C1)",
             "field": "isbn13",
             "raw_value": "2.94001108065e+12",
             "action": "not used as a cleaned ISBN"
@@ -188440,7 +188401,7 @@
         "review": false,
         "warnings": [
           {
-            "issue": "isbn13: scientific notation code that is not an ISBN-13",
+            "issue": "isbn13: rounded scientific notation code; digits lost, not an ISBN-13 (C1)",
             "field": "isbn13",
             "raw_value": "1.2300000055e+12",
             "action": "not used as a cleaned ISBN"
@@ -188858,7 +188819,7 @@
         "review": false,
         "warnings": [
           {
-            "issue": "isbn13: scientific notation code that is not an ISBN-13",
+            "issue": "isbn13: rounded scientific notation code; digits lost, not an ISBN-13 (C1)",
             "field": "isbn13",
             "raw_value": "2.94001463181e+12",
             "action": "not used as a cleaned ISBN"
@@ -189634,7 +189595,7 @@
         "review": false,
         "warnings": [
           {
-            "issue": "isbn13: scientific notation code that is not an ISBN-13",
+            "issue": "isbn13: rounded scientific notation code; digits lost, not an ISBN-13 (C1)",
             "field": "isbn13",
             "raw_value": "2.94001248214e+12",
             "action": "not used as a cleaned ISBN"
@@ -190140,7 +190101,7 @@
         "review": false,
         "warnings": [
           {
-            "issue": "isbn13: scientific notation code that is not an ISBN-13",
+            "issue": "isbn13: rounded scientific notation code; digits lost, not an ISBN-13 (C1)",
             "field": "isbn13",
             "raw_value": "2.94001119121e+12",
             "action": "not used as a cleaned ISBN"
@@ -190894,7 +190855,7 @@
         "review": false,
         "warnings": [
           {
-            "issue": "isbn13: scientific notation code that is not an ISBN-13",
+            "issue": "isbn13: rounded scientific notation code; digits lost, not an ISBN-13 (C1)",
             "field": "isbn13",
             "raw_value": "2.94001474615e+12",
             "action": "not used as a cleaned ISBN"
@@ -190908,8 +190869,8 @@
     ]
   },
   {
-    "run_date": "2026-11-06",
-    "run_time": "2026-11-06 16:44:55 -0600 CST",
+    "run_date": "2026-11-08",
+    "run_time": "2026-11-08 14:01:21 -0600 CST",
     "status": "completed",
     "file": "books.csv",
     "file_path": "/Users/ashaabdulkadir/workspace/language-of-computation/week4-assignment/books.csv",
@@ -190942,9 +190903,9 @@
         "rows": 131
       },
       {
-        "issue": "isbn13: scientific notation code that is not an ISBN-13",
+        "issue": "isbn13: rounded scientific notation code; digits lost, not an ISBN-13 (C1)",
         "action": "skipped",
-        "rows": 29
+        "rows": 26
       },
       {
         "issue": "isbn: wrong check digit (leading zeros also missing)",
@@ -190962,7 +190923,12 @@
         "rows": 9
       },
       {
-        "issue": "isbn13: decimal value not confirmed by this row's ISBN-10 (R17)",
+        "issue": "isbn13: decimal value not confirmed by this row's ISBN-10; not used (R17, C2)",
+        "action": "skipped",
+        "rows": 3
+      },
+      {
+        "issue": "isbn13: scientific notation code that is not an ISBN-13",
         "action": "skipped",
         "rows": 3
       },
@@ -205508,7 +205474,7 @@
         "review": false,
         "warnings": [
           {
-            "issue": "isbn13: decimal value not confirmed by this row's ISBN-10 (R17)",
+            "issue": "isbn13: decimal value not confirmed by this row's ISBN-10; not used (R17, C2)",
             "field": "isbn13",
             "raw_value": "76783609419.0",
             "action": "not used as a cleaned ISBN"
@@ -205517,7 +205483,7 @@
         "raw_isbn": "553609416",
         "raw_isbn13": "76783609419.0",
         "isbn10_clean": "0553609416",
-        "isbn13_clean": "9780553609417"
+        "isbn13_clean": null
       },
       {
         "line": 960,
@@ -207770,7 +207736,7 @@
         "review": false,
         "warnings": [
           {
-            "issue": "isbn13: scientific notation code that is not an ISBN-13",
+            "issue": "isbn13: rounded scientific notation code; digits lost, not an ISBN-13 (C1)",
             "field": "isbn13",
             "raw_value": "9.79000767239e+12",
             "action": "not used as a cleaned ISBN"
@@ -207779,7 +207745,7 @@
         "raw_isbn": "6280560",
         "raw_isbn13": "9.79000767239e+12",
         "isbn10_clean": "0006280560",
-        "isbn13_clean": "9780006280569"
+        "isbn13_clean": null
       },
       {
         "line": 1108,
@@ -208690,7 +208656,7 @@
         "review": false,
         "warnings": [
           {
-            "issue": "isbn13: scientific notation code that is not an ISBN-13",
+            "issue": "isbn13: rounded scientific notation code; digits lost, not an ISBN-13 (C1)",
             "field": "isbn13",
             "raw_value": "2.94001623192e+12",
             "action": "not used as a cleaned ISBN"
@@ -231690,7 +231656,7 @@
         "review": false,
         "warnings": [
           {
-            "issue": "isbn13: scientific notation code that is not an ISBN-13",
+            "issue": "isbn13: rounded scientific notation code; digits lost, not an ISBN-13 (C1)",
             "field": "isbn13",
             "raw_value": "2.94001144494e+12",
             "action": "not used as a cleaned ISBN"
@@ -237004,7 +236970,7 @@
         "review": false,
         "warnings": [
           {
-            "issue": "isbn13: scientific notation code that is not an ISBN-13",
+            "issue": "isbn13: rounded scientific notation code; digits lost, not an ISBN-13 (C1)",
             "field": "isbn13",
             "raw_value": "2.94001497963e+12",
             "action": "not used as a cleaned ISBN"
@@ -239154,7 +239120,7 @@
         "review": false,
         "warnings": [
           {
-            "issue": "isbn13: scientific notation code that is not an ISBN-13",
+            "issue": "isbn13: rounded scientific notation code; digits lost, not an ISBN-13 (C1)",
             "field": "isbn13",
             "raw_value": "2.94001635694e+12",
             "action": "not used as a cleaned ISBN"
@@ -243655,7 +243621,7 @@
         "review": false,
         "warnings": [
           {
-            "issue": "isbn13: scientific notation code that is not an ISBN-13",
+            "issue": "isbn13: rounded scientific notation code; digits lost, not an ISBN-13 (C1)",
             "field": "isbn13",
             "raw_value": "2.94001513629e+12",
             "action": "not used as a cleaned ISBN"
@@ -252536,7 +252502,7 @@
         "review": false,
         "warnings": [
           {
-            "issue": "isbn13: scientific notation code that is not an ISBN-13",
+            "issue": "isbn13: rounded scientific notation code; digits lost, not an ISBN-13 (C1)",
             "field": "isbn13",
             "raw_value": "2.94004498098e+12",
             "action": "not used as a cleaned ISBN"
@@ -259380,7 +259346,7 @@
         "review": false,
         "warnings": [
           {
-            "issue": "isbn13: scientific notation code that is not an ISBN-13",
+            "issue": "isbn13: rounded scientific notation code; digits lost, not an ISBN-13 (C1)",
             "field": "isbn13",
             "raw_value": "2.94001549587e+12",
             "action": "not used as a cleaned ISBN"
@@ -259417,7 +259383,7 @@
         "review": false,
         "warnings": [
           {
-            "issue": "isbn13: scientific notation code that is not an ISBN-13",
+            "issue": "isbn13: rounded scientific notation code; digits lost, not an ISBN-13 (C1)",
             "field": "isbn13",
             "raw_value": "2.94001624931e+12",
             "action": "not used as a cleaned ISBN"
@@ -270586,7 +270552,7 @@
         "review": false,
         "warnings": [
           {
-            "issue": "isbn13: scientific notation code that is not an ISBN-13",
+            "issue": "isbn13: rounded scientific notation code; digits lost, not an ISBN-13 (C1)",
             "field": "isbn13",
             "raw_value": "2.94001631951e+12",
             "action": "not used as a cleaned ISBN"
@@ -270623,7 +270589,7 @@
         "review": false,
         "warnings": [
           {
-            "issue": "isbn13: scientific notation code that is not an ISBN-13",
+            "issue": "isbn13: rounded scientific notation code; digits lost, not an ISBN-13 (C1)",
             "field": "isbn13",
             "raw_value": "2.94001648708e+12",
             "action": "not used as a cleaned ISBN"
@@ -271775,7 +271741,7 @@
         "review": false,
         "warnings": [
           {
-            "issue": "isbn13: scientific notation code that is not an ISBN-13",
+            "issue": "isbn13: rounded scientific notation code; digits lost, not an ISBN-13 (C1)",
             "field": "isbn13",
             "raw_value": "2.94014886112e+12",
             "action": "not used as a cleaned ISBN"
@@ -277979,7 +277945,7 @@
         "review": false,
         "warnings": [
           {
-            "issue": "isbn13: scientific notation code that is not an ISBN-13",
+            "issue": "isbn13: rounded scientific notation code; digits lost, not an ISBN-13 (C1)",
             "field": "isbn13",
             "raw_value": "6.22110201718e+12",
             "action": "not used as a cleaned ISBN"
@@ -280666,7 +280632,7 @@
         "review": false,
         "warnings": [
           {
-            "issue": "isbn13: scientific notation code that is not an ISBN-13",
+            "issue": "isbn13: rounded scientific notation code; digits lost, not an ISBN-13 (C1)",
             "field": "isbn13",
             "raw_value": "2.94001655433e+12",
             "action": "not used as a cleaned ISBN"
@@ -282002,7 +281968,7 @@
         "review": false,
         "warnings": [
           {
-            "issue": "isbn13: scientific notation code that is not an ISBN-13",
+            "issue": "isbn13: rounded scientific notation code; digits lost, not an ISBN-13 (C1)",
             "field": "isbn13",
             "raw_value": "2.94001497768e+12",
             "action": "not used as a cleaned ISBN"
@@ -285726,7 +285692,7 @@
         "review": false,
         "warnings": [
           {
-            "issue": "isbn13: decimal value not confirmed by this row's ISBN-10 (R17)",
+            "issue": "isbn13: decimal value not confirmed by this row's ISBN-10; not used (R17, C2)",
             "field": "isbn13",
             "raw_value": "25986247522.0",
             "action": "not used as a cleaned ISBN"
@@ -285735,7 +285701,7 @@
         "raw_isbn": "310247527",
         "raw_isbn13": "25986247522.0",
         "isbn10_clean": "0310247527",
-        "isbn13_clean": "9780310247524"
+        "isbn13_clean": null
       },
       {
         "line": 6144,
@@ -288799,7 +288765,7 @@
         "review": false,
         "warnings": [
           {
-            "issue": "isbn13: scientific notation code that is not an ISBN-13",
+            "issue": "isbn13: rounded scientific notation code; digits lost, not an ISBN-13 (C1)",
             "field": "isbn13",
             "raw_value": "2.94001266893e+12",
             "action": "not used as a cleaned ISBN"
@@ -289935,7 +289901,7 @@
         "review": false,
         "warnings": [
           {
-            "issue": "isbn13: scientific notation code that is not an ISBN-13",
+            "issue": "isbn13: rounded scientific notation code; digits lost, not an ISBN-13 (C1)",
             "field": "isbn13",
             "raw_value": "2.94014954334e+12",
             "action": "not used as a cleaned ISBN"
@@ -290338,7 +290304,7 @@
         "review": false,
         "warnings": [
           {
-            "issue": "isbn13: decimal value not confirmed by this row's ISBN-10 (R17)",
+            "issue": "isbn13: decimal value not confirmed by this row's ISBN-10; not used (R17, C2)",
             "field": "isbn13",
             "raw_value": "31809014745.0",
             "action": "not used as a cleaned ISBN"
@@ -290347,7 +290313,7 @@
         "raw_isbn": "842319476",
         "raw_isbn13": "31809014745.0",
         "isbn10_clean": "0842319476",
-        "isbn13_clean": "9780842319478"
+        "isbn13_clean": null
       },
       {
         "line": 6439,
@@ -294433,7 +294399,7 @@
         "review": false,
         "warnings": [
           {
-            "issue": "isbn13: scientific notation code that is not an ISBN-13",
+            "issue": "isbn13: rounded scientific notation code; digits lost, not an ISBN-13 (C1)",
             "field": "isbn13",
             "raw_value": "2.94001328325e+12",
             "action": "not used as a cleaned ISBN"
@@ -309739,7 +309705,7 @@
         "review": false,
         "warnings": [
           {
-            "issue": "isbn13: scientific notation code that is not an ISBN-13",
+            "issue": "isbn13: rounded scientific notation code; digits lost, not an ISBN-13 (C1)",
             "field": "isbn13",
             "raw_value": "2.94004447015e+12",
             "action": "not used as a cleaned ISBN"
@@ -318676,7 +318642,7 @@
         "review": false,
         "warnings": [
           {
-            "issue": "isbn13: scientific notation code that is not an ISBN-13",
+            "issue": "isbn13: rounded scientific notation code; digits lost, not an ISBN-13 (C1)",
             "field": "isbn13",
             "raw_value": "6.22110201942e+12",
             "action": "not used as a cleaned ISBN"
@@ -326939,7 +326905,7 @@
         "review": false,
         "warnings": [
           {
-            "issue": "isbn13: scientific notation code that is not an ISBN-13",
+            "issue": "isbn13: rounded scientific notation code; digits lost, not an ISBN-13 (C1)",
             "field": "isbn13",
             "raw_value": "2.94001108065e+12",
             "action": "not used as a cleaned ISBN"
@@ -329609,7 +329575,7 @@
         "review": false,
         "warnings": [
           {
-            "issue": "isbn13: scientific notation code that is not an ISBN-13",
+            "issue": "isbn13: rounded scientific notation code; digits lost, not an ISBN-13 (C1)",
             "field": "isbn13",
             "raw_value": "1.2300000055e+12",
             "action": "not used as a cleaned ISBN"
@@ -332142,7 +332108,7 @@
         "review": false,
         "warnings": [
           {
-            "issue": "isbn13: scientific notation code that is not an ISBN-13",
+            "issue": "isbn13: rounded scientific notation code; digits lost, not an ISBN-13 (C1)",
             "field": "isbn13",
             "raw_value": "2.94001463181e+12",
             "action": "not used as a cleaned ISBN"
@@ -337268,7 +337234,7 @@
         "review": false,
         "warnings": [
           {
-            "issue": "isbn13: scientific notation code that is not an ISBN-13",
+            "issue": "isbn13: rounded scientific notation code; digits lost, not an ISBN-13 (C1)",
             "field": "isbn13",
             "raw_value": "2.94001248214e+12",
             "action": "not used as a cleaned ISBN"
@@ -341494,7 +341460,7 @@
         "review": false,
         "warnings": [
           {
-            "issue": "isbn13: scientific notation code that is not an ISBN-13",
+            "issue": "isbn13: rounded scientific notation code; digits lost, not an ISBN-13 (C1)",
             "field": "isbn13",
             "raw_value": "2.94001119121e+12",
             "action": "not used as a cleaned ISBN"
@@ -346118,7 +346084,7 @@
         "review": false,
         "warnings": [
           {
-            "issue": "isbn13: scientific notation code that is not an ISBN-13",
+            "issue": "isbn13: rounded scientific notation code; digits lost, not an ISBN-13 (C1)",
             "field": "isbn13",
             "raw_value": "2.94001474615e+12",
             "action": "not used as a cleaned ISBN"
@@ -346297,8 +346263,8 @@
     ]
   },
   {
-    "run_date": "2026-11-06",
-    "run_time": "2026-11-06 16:44:56 -0600 CST",
+    "run_date": "2026-11-08",
+    "run_time": "2026-11-08 14:01:22 -0600 CST",
     "status": "completed",
     "file": "books-batch2.csv",
     "file_path": "/Users/ashaabdulkadir/workspace/language-of-computation/week4-assignment/books-batch2.csv",

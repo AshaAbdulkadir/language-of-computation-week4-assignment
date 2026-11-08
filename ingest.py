@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Load a books CSV file into books.db, following rules.md (Module 4, version 1.0).
+"""Load a books CSV file into books.db, following rules.md (Module 4, version 1.1).
 
 Usage:
     python3 ingest.py <file.csv>
@@ -46,6 +46,7 @@ PROTECTED_FIELDS = ["best_book_id", "work_id", "original_title",
 EXTRA_COLUMNS = ["goodreads_id_clean", "isbn_10_clean", "isbn_13_clean"]
 
 REASON_DUPLICATE = "exact duplicate in input"
+REASON_NORMALIZED = "normalized duplicate in input"
 REASON_EXISTS = "already exists, no change"
 
 
@@ -140,20 +141,24 @@ def classify_isbn(raw):
     return {"kind": "invalid", "issue": "isbn: contains characters that are not allowed"}
 
 
+def classify_13_digits(s, steps):
+    if isbn13_valid(s):
+        return {"kind": "valid13", "value": s, "steps": steps}
+    if s.startswith("9790"):
+        return {"kind": "not_isbn", "issue": "isbn13: 9790 ISMN, not an ISBN (R11, C3)"}
+    if s.startswith("978"):
+        return {"kind": "bad978", "value": s, "issue": "isbn13: 978 value with a wrong check digit"}
+    if s.startswith("979"):
+        return {"kind": "bad979", "value": s, "issue": "isbn13: 979 value with a wrong check digit (C3)"}
+    return {"kind": "not_isbn", "issue": "isbn13: product code, not an ISBN"}
+
+
 def classify_isbn13(raw):
     s, steps = formatted(raw)
     if s == "":
         return {"kind": "empty"}
     if re.fullmatch(r"[0-9]{13}", s):
-        if isbn13_valid(s):
-            return {"kind": "valid13", "value": s, "steps": steps}
-        if s.startswith("9790"):
-            return {"kind": "not_isbn", "issue": "isbn13: 9790 ISMN, not an ISBN"}
-        if s.startswith("978"):
-            return {"kind": "bad978", "value": s, "issue": "isbn13: 978 value with a wrong check digit"}
-        if s.startswith("979"):
-            return {"kind": "invalid", "issue": "isbn13: wrong check digit"}
-        return {"kind": "not_isbn", "issue": "isbn13: product code, not an ISBN"}
+        return classify_13_digits(s, steps)
     if re.fullmatch(r"[0-9]{9}[0-9X]", s) and isbn10_valid(s):
         return {"kind": "isbn10", "value": s, "steps": steps}
     m = SCI.fullmatch(s)
@@ -162,8 +167,15 @@ def classify_isbn13(raw):
         if value != value.to_integral_value():
             return {"kind": "invalid", "issue": "isbn13: scientific notation value is not a whole number"}
         digits = str(int(value))
-        if len(digits) == 13 and digits[:3] in ("978", "979") and not digits.startswith("9790"):
-            return {"kind": "rounded", "value": value, "sig": len(m.group(1) + (m.group(2) or ""))}
+        sig = len(m.group(1) + (m.group(2) or ""))
+        isbn_like = len(digits) == 13 and digits[:3] in ("978", "979") and not digits.startswith("9790")
+        if sig < len(digits):  # C1: rounded only when significant digits were lost
+            if isbn_like:
+                return {"kind": "rounded", "value": value, "sig": sig}
+            return {"kind": "rounded_other",
+                    "issue": "isbn13: rounded scientific notation code; digits lost, not an ISBN-13 (C1)"}
+        if len(digits) == 13:  # exact: judge the 13 digits as written out
+            return classify_13_digits(digits, steps)
         return {"kind": "not_isbn", "issue": "isbn13: scientific notation code that is not an ISBN-13"}
     m = re.fullmatch(r"([0-9]+)\.0", s)
     if m:
@@ -227,13 +239,12 @@ def evaluate_isbns(raw_isbn, raw_isbn13):
     # R13: a valid ISBN-10 in the isbn13 column.
     if b["kind"] == "isbn10":
         moved = b["value"]
-        if a["kind"] == "invalid":
-            warn("isbn13 holds a valid ISBN-10 but isbn holds an invalid value", "isbn13", raw_isbn13, review=True)
-            return out
         if a["kind"] == "isbn10" and a["value"] != moved:
             return conflict("isbn and isbn13 hold two different valid ISBN-10s (R13, R21)")
         out["isbn10"] = moved
-        if a["kind"] == "empty":
+        if a["kind"] == "invalid":  # C9: R13 moves the valid ISBN-10; nothing is calculated
+            warn("invalid isbn value replaced by the valid ISBN-10 found in isbn13 (C9)", "isbn", raw_isbn)
+        if a["kind"] in ("empty", "invalid"):
             repair("isbn_10_clean", raw_isbn13, moved, "moved valid ISBN-10 from the isbn13 column (R13)")
         elif a["steps"]:
             repair("isbn_10_clean", raw_isbn, moved, "; ".join(a["steps"]) + " (R12)")
@@ -273,13 +284,21 @@ def evaluate_isbns(raw_isbn, raw_isbn13):
             else:
                 warn("isbn13: 978 value with a wrong check digit contradicts the ISBN-10 (R19)",
                      "isbn13", raw_isbn13, review=True)
-        elif kind == "dot0" and (b["digits"].zfill(10) if 7 <= len(b["digits"]) <= 9 else b["digits"]) == i10:
-            out["isbn13"] = t13
-            repair("isbn_13_clean", raw_isbn13, t13,
-                   "isbn13 held this row's ISBN-10 followed by .0; confirmed, ISBN-13 derived (R17)")
-        else:  # product code, ISMN, unconfirmed .0 value or another unusable value
-            issue = b.get("issue", "isbn13: decimal value not confirmed by this row's ISBN-10 (R17)")
-            warn(issue, "isbn13", raw_isbn13)
+        elif kind == "dot0":  # C2: R17 alone decides, padding included
+            if (b["digits"].zfill(10) if 7 <= len(b["digits"]) <= 9 else b["digits"]) == i10:
+                out["isbn13"] = t13
+                repair("isbn_13_clean", raw_isbn13, t13,
+                       "isbn13 held this row's ISBN-10 followed by .0; confirmed, ISBN-13 derived (R17, C2)")
+            else:
+                warn("isbn13: decimal value not confirmed by this row's ISBN-10; not used (R17, C2)",
+                     "isbn13", raw_isbn13)
+        elif kind == "rounded_other":  # C1: a rounded code can never pass R16
+            warn(b["issue"], "isbn13", raw_isbn13)
+        elif kind == "bad979":  # C3: a 979 value can never match an ISBN-10
+            warn("isbn13: 979 value with a wrong check digit contradicts the ISBN-10 (C3)",
+                 "isbn13", raw_isbn13, review=True)
+        else:  # product code, ISMN or another unusable value (R19)
+            warn(b["issue"], "isbn13", raw_isbn13)
             out["isbn13"] = t13
             repair("isbn_13_clean", raw_isbn13, t13, "derived ISBN-13 from the valid ISBN-10 (R19)")
         return out
@@ -534,7 +553,7 @@ def ingest(conn, rows):
         else:
             for r in group[1:]:
                 r.update({"outcome": "skipped", "duplicate": True,
-                          "reason": "{} after normalization (same as line {})".format(REASON_DUPLICATE, group[0]["line"])})
+                          "reason": "{} (same as line {}) (C6)".format(REASON_NORMALIZED, group[0]["line"])})
     by_gid = {}
     for r in results:
         if r["outcome"] is None and r["gid"] is not None:
@@ -611,6 +630,19 @@ def ingest(conn, rows):
             else:
                 reject(r, "different validated ISBN for book_id {}: stored {}, incoming {} (R26)".format(
                     r["bid"], old, new))
+                break
+        if r["outcome"] == "rejected":
+            continue
+        # C8: a fill must correspond to the book's other stored ISBN.
+        stored10, stored13 = stored["isbn_10_clean"], stored["isbn_13_clean"]
+        for col, _, new in [c for c in changes if c[0] in filled]:
+            other = stored13 if col == "isbn_10_clean" else stored10
+            if other is None:
+                continue
+            matches = to13(new) == other if col == "isbn_10_clean" else to13(other) == new
+            if not matches:
+                reject(r, "incoming ISBN {} would fill an empty field but contradicts the stored ISBN {} (C8)".format(
+                    new, other))
                 break
         if r["outcome"] == "rejected":
             continue

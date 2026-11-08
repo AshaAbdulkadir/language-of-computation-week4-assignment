@@ -1,0 +1,286 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.9.6, pytest-8.4.2, pluggy-1.6.0 -- /Library/Developer/CommandLineTools/usr/bin/python3
+rootdir: /Users/ashaabdulkadir/workspace/language-of-computation/week4-assignment
+configfile: pytest.ini
+testpaths: tests
+collecting ... collected 59 items
+
+tests/test_ingest.py::test_example_01_matching_valid_pair PASSED         [  1%]
+tests/test_ingest.py::test_example_02_padded_isbn10_and_rounded_isbn13 PASSED [  3%]
+tests/test_ingest.py::test_example_03_eight_digit_isbn10_padded_isbn13_derived PASSED [  5%]
+tests/test_ingest.py::test_example_04_hyphens_removed PASSED             [  6%]
+tests/test_ingest.py::test_example_05_spaces_removed PASSED              [  8%]
+tests/test_ingest.py::test_example_06_lowercase_x_uppercased PASSED      [ 10%]
+tests/test_ingest.py::test_example_07_isbn13_in_isbn_column_moved PASSED [ 11%]
+tests/test_ingest.py::test_example_08_isbn10_derived_from_978_isbn13 PASSED [ 13%]
+tests/test_ingest.py::test_example_09_979_isbn13_has_no_isbn10 PASSED    [ 15%]
+tests/test_ingest.py::test_example_10_rounded_isbn13_matches_derived PASSED [ 16%]
+tests/test_ingest.py::test_example_11_rounded_isbn13_without_isbn10 PASSED [ 18%]
+tests/test_ingest.py::test_example_12_ambiguous_rounded_isbn13 PASSED    [ 20%]
+tests/test_ingest.py::test_example_13_wrong_check_digit PASSED           [ 22%]
+tests/test_ingest.py::test_example_14_illegal_letter PASSED              [ 23%]
+tests/test_ingest.py::test_example_15_extra_digit PASSED                 [ 25%]
+tests/test_ingest.py::test_example_16_product_code PASSED                [ 27%]
+tests/test_ingest.py::test_example_17_product_code_with_valid_isbn10 PASSED [ 28%]
+tests/test_ingest.py::test_example_18_dot0_copy_of_isbn10 PASSED         [ 30%]
+tests/test_ingest.py::test_example_19_unconfirmed_dot0_value PASSED      [ 32%]
+tests/test_ingest.py::test_example_20_both_isbns_blank PASSED            [ 33%]
+tests/test_ingest.py::test_example_21_valid_but_mismatched_pair PASSED   [ 35%]
+tests/test_ingest.py::test_example_22_isbn_owned_by_another_book PASSED  [ 37%]
+tests/test_ingest.py::test_example_23_two_valid_mismatched_isbns PASSED  [ 38%]
+tests/test_ingest.py::test_example_24_exact_duplicate_in_one_file PASSED [ 40%]
+tests/test_ingest.py::test_example_25_accepted_book_repeats_with_normalized_isbns PASSED [ 42%]
+tests/test_ingest.py::test_example_26_blank_isbns_never_erase_accepted_ones PASSED [ 44%]
+tests/test_ingest.py::test_example_27_approved_metadata_updated PASSED   [ 45%]
+tests/test_ingest.py::test_example_28_same_book_id_with_different_identity[title-A Different Title] PASSED [ 47%]
+tests/test_ingest.py::test_example_28_same_book_id_with_different_identity[authors-A Different Author] PASSED [ 49%]
+tests/test_ingest.py::test_example_29_two_new_rows_share_a_goodreads_id PASSED [ 50%]
+tests/test_ingest.py::test_example_30_no_goodreads_id_and_no_isbn PASSED [ 52%]
+tests/test_ingest.py::test_example_31_two_new_books_claim_the_same_isbn PASSED [ 54%]
+tests/test_ingest.py::test_example_32_different_validated_isbn_on_existing_book PASSED [ 55%]
+tests/test_ingest.py::test_example_33_required_identity_missing[blank-book_id] PASSED [ 57%]
+tests/test_ingest.py::test_example_33_required_identity_missing[nonnumeric-book_id] PASSED [ 59%]
+tests/test_ingest.py::test_example_33_required_identity_missing[fractional-book_id] PASSED [ 61%]
+tests/test_ingest.py::test_example_33_required_identity_missing[blank-title] PASSED [ 62%]
+tests/test_ingest.py::test_example_33_required_identity_missing[blank-authors] PASSED [ 64%]
+tests/test_ingest.py::test_example_34_missing_isbn_filled_later PASSED   [ 66%]
+tests/test_ingest.py::test_example_35_invalid_isbn10_and_unsupported_rounded_isbn13 PASSED [ 67%]
+tests/test_ingest.py::test_rerun_creates_no_duplicates PASSED            [ 69%]
+tests/test_ingest.py::test_every_run_appends_to_the_log PASSED           [ 71%]
+tests/test_ingest.py::test_outcome_counts_add_up_to_rows_read[run1-books] PASSED [ 72%]
+tests/test_ingest.py::test_outcome_counts_add_up_to_rows_read[run2-books-again] PASSED [ 74%]
+tests/test_ingest.py::test_outcome_counts_add_up_to_rows_read[run3-batch2] PASSED [ 76%]
+tests/test_ingest.py::test_same_file_on_empty_database_gives_same_database PASSED [ 77%]
+tests/test_ingest.py::test_example_36_rounded_product_code_not_used FAILED [ 79%]
+tests/test_ingest.py::test_example_37_rounded_9790_value_not_used FAILED [ 81%]
+tests/test_ingest.py::test_example_38_unconfirmed_decimal_not_derived FAILED [ 83%]
+tests/test_ingest.py::test_example_39_unconfirmed_decimal_product_code_not_derived FAILED [ 84%]
+tests/test_ingest.py::test_example_40_decimal_confirmed_after_padding PASSED [ 86%]
+tests/test_ingest.py::test_example_41_invalid_979_value_flagged FAILED   [ 88%]
+tests/test_ingest.py::test_example_42_9790_value_treated_as_product_code PASSED [ 89%]
+tests/test_ingest.py::test_example_43_conflicting_pair_for_book_without_isbns PASSED [ 91%]
+tests/test_ingest.py::test_example_44_blank_raw_isbn_stored_as_empty_text PASSED [ 93%]
+tests/test_ingest.py::test_example_45_formatting_only_duplicate_in_one_file FAILED [ 94%]
+tests/test_ingest.py::test_example_46_exact_copy_of_rejected_row_skipped PASSED [ 96%]
+tests/test_ingest.py::test_example_47_fill_that_contradicts_other_stored_isbn_rejected PASSED [ 98%]
+tests/test_ingest.py::test_example_48_valid_isbn10_moved_from_isbn13_column FAILED [100%]
+
+=================================== FAILURES ===================================
+________________ test_example_36_rounded_product_code_not_used _________________
+
+env = <conftest.Env object at 0x106011160>
+
+    def test_example_36_rounded_product_code_not_used(env):
+        """Example 36 (C1): a rounded product code gives no ISBN-13; warn."""
+        e = load_one(env, 20036, "189221301X", "6.4557300301e+11")
+>       isbns_are(env, 20036, "189221301X", None)
+
+tests/test_ingest.py:478: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+env = <conftest.Env object at 0x106011160>, book_id = 20036
+isbn10 = '189221301X', isbn13 = None
+
+    def isbns_are(env, book_id, isbn10, isbn13):
+        """None means NULL: no cleaned value."""
+        stored10, stored13 = env.stored_isbns(book_id)
+        for label, expected, stored in (("ISBN-10", isbn10, stored10), ("ISBN-13", isbn13, stored13)):
+            if expected is None:
+>               assert is_empty(stored), "book {}: {} should be NULL, got {!r}".format(book_id, label, stored)
+E               AssertionError: book 20036: ISBN-13 should be NULL, got '9781892213013'
+E               assert False
+E                +  where False = is_empty('9781892213013')
+
+tests/test_ingest.py:59: AssertionError
+----------------------------- Captured stdout call -----------------------------
+2026-11-08 14:00:00 -0600 CST  input-1.csv
+  read 1, loaded 1, updated 0, skipped 0 (already exist 0, exact duplicates 0), rejected 0, warnings 1, for review 0
+  details: /var/folders/4k/h8qgc7yd653b1zd428bj14jc0000gn/T/ingest-test-_hqniy4x/test-ingestion-log.json
+_________________ test_example_37_rounded_9790_value_not_used __________________
+
+env = <conftest.Env object at 0x107453c40>
+
+    def test_example_37_rounded_9790_value_not_used(env):
+        """Example 37 (C1, C3): pad the ISBN-10; a rounded 9790 value gives no ISBN-13; warn."""
+        e = load_one(env, 20037, "6280560", "9.79000767239e+12")
+>       isbns_are(env, 20037, "0006280560", None)
+
+tests/test_ingest.py:485: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+env = <conftest.Env object at 0x107453c40>, book_id = 20037
+isbn10 = '0006280560', isbn13 = None
+
+    def isbns_are(env, book_id, isbn10, isbn13):
+        """None means NULL: no cleaned value."""
+        stored10, stored13 = env.stored_isbns(book_id)
+        for label, expected, stored in (("ISBN-10", isbn10, stored10), ("ISBN-13", isbn13, stored13)):
+            if expected is None:
+>               assert is_empty(stored), "book {}: {} should be NULL, got {!r}".format(book_id, label, stored)
+E               AssertionError: book 20037: ISBN-13 should be NULL, got '9780006280569'
+E               assert False
+E                +  where False = is_empty('9780006280569')
+
+tests/test_ingest.py:59: AssertionError
+----------------------------- Captured stdout call -----------------------------
+2026-11-08 14:00:00 -0600 CST  input-1.csv
+  read 1, loaded 1, updated 0, skipped 0 (already exist 0, exact duplicates 0), rejected 0, warnings 1, for review 0
+  details: /var/folders/4k/h8qgc7yd653b1zd428bj14jc0000gn/T/ingest-test-czdclnp7/test-ingestion-log.json
+_______________ test_example_38_unconfirmed_decimal_not_derived ________________
+
+env = <conftest.Env object at 0x105fe6940>
+
+    def test_example_38_unconfirmed_decimal_not_derived(env):
+        """Example 38 (C2): an unconfirmed decimal value; no derivation; warn."""
+        e = load_one(env, 20038, "0439139600", "0439139601.0")
+>       isbns_are(env, 20038, "0439139600", None)
+
+tests/test_ingest.py:492: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+env = <conftest.Env object at 0x105fe6940>, book_id = 20038
+isbn10 = '0439139600', isbn13 = None
+
+    def isbns_are(env, book_id, isbn10, isbn13):
+        """None means NULL: no cleaned value."""
+        stored10, stored13 = env.stored_isbns(book_id)
+        for label, expected, stored in (("ISBN-10", isbn10, stored10), ("ISBN-13", isbn13, stored13)):
+            if expected is None:
+>               assert is_empty(stored), "book {}: {} should be NULL, got {!r}".format(book_id, label, stored)
+E               AssertionError: book 20038: ISBN-13 should be NULL, got '9780439139601'
+E               assert False
+E                +  where False = is_empty('9780439139601')
+
+tests/test_ingest.py:59: AssertionError
+----------------------------- Captured stdout call -----------------------------
+2026-11-08 14:00:00 -0600 CST  input-1.csv
+  read 1, loaded 1, updated 0, skipped 0 (already exist 0, exact duplicates 0), rejected 0, warnings 1, for review 0
+  details: /var/folders/4k/h8qgc7yd653b1zd428bj14jc0000gn/T/ingest-test-ly16057e/test-ingestion-log.json
+_________ test_example_39_unconfirmed_decimal_product_code_not_derived _________
+
+env = <conftest.Env object at 0x10732eac0>
+
+    def test_example_39_unconfirmed_decimal_product_code_not_derived(env):
+        """Example 39 (C2): an unconfirmed decimal product code; no derivation; warn."""
+        e = load_one(env, 20039, "553609416", "76783609419.0")
+>       isbns_are(env, 20039, "0553609416", None)
+
+tests/test_ingest.py:499: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+env = <conftest.Env object at 0x10732eac0>, book_id = 20039
+isbn10 = '0553609416', isbn13 = None
+
+    def isbns_are(env, book_id, isbn10, isbn13):
+        """None means NULL: no cleaned value."""
+        stored10, stored13 = env.stored_isbns(book_id)
+        for label, expected, stored in (("ISBN-10", isbn10, stored10), ("ISBN-13", isbn13, stored13)):
+            if expected is None:
+>               assert is_empty(stored), "book {}: {} should be NULL, got {!r}".format(book_id, label, stored)
+E               AssertionError: book 20039: ISBN-13 should be NULL, got '9780553609417'
+E               assert False
+E                +  where False = is_empty('9780553609417')
+
+tests/test_ingest.py:59: AssertionError
+----------------------------- Captured stdout call -----------------------------
+2026-11-08 14:00:00 -0600 CST  input-1.csv
+  read 1, loaded 1, updated 0, skipped 0 (already exist 0, exact duplicates 0), rejected 0, warnings 1, for review 0
+  details: /var/folders/4k/h8qgc7yd653b1zd428bj14jc0000gn/T/ingest-test-0ehl9iu0/test-ingestion-log.json
+__________________ test_example_41_invalid_979_value_flagged ___________________
+
+env = <conftest.Env object at 0x105f7f100>
+
+    def test_example_41_invalid_979_value_flagged(env):
+        """Example 41 (C3): an invalid 979 value contradicts the ISBN-10; warn and flag."""
+        e = load_one(env, 20041, "0439139600", "9798351220410")
+>       isbns_are(env, 20041, "0439139600", None)
+
+tests/test_ingest.py:513: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+env = <conftest.Env object at 0x105f7f100>, book_id = 20041
+isbn10 = '0439139600', isbn13 = None
+
+    def isbns_are(env, book_id, isbn10, isbn13):
+        """None means NULL: no cleaned value."""
+        stored10, stored13 = env.stored_isbns(book_id)
+        for label, expected, stored in (("ISBN-10", isbn10, stored10), ("ISBN-13", isbn13, stored13)):
+            if expected is None:
+>               assert is_empty(stored), "book {}: {} should be NULL, got {!r}".format(book_id, label, stored)
+E               AssertionError: book 20041: ISBN-13 should be NULL, got '9780439139601'
+E               assert False
+E                +  where False = is_empty('9780439139601')
+
+tests/test_ingest.py:59: AssertionError
+----------------------------- Captured stdout call -----------------------------
+2026-11-08 14:00:00 -0600 CST  input-1.csv
+  read 1, loaded 1, updated 0, skipped 0 (already exist 0, exact duplicates 0), rejected 0, warnings 1, for review 0
+  details: /var/folders/4k/h8qgc7yd653b1zd428bj14jc0000gn/T/ingest-test-xk2qhdql/test-ingestion-log.json
+____________ test_example_45_formatting_only_duplicate_in_one_file _____________
+
+env = <conftest.Env object at 0x105f7f640>
+
+    def test_example_45_formatting_only_duplicate_in_one_file(env):
+        """Example 45 (C6): first row loaded; second skipped as a normalized duplicate."""
+        e = env.run_rows(new_book(20045, "0-439-13960-0", ""), new_book(20045, "0439139600", ""))
+        counts_are(e, read=2, loaded=1, skipped=1)
+        isbns_are(env, 20045, "0439139600", "9780439139601")
+>       reason_contains(e, 20045, "normalized duplicate in input")
+
+tests/test_ingest.py:549: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+entry = {'attention': [{'book_id': '20045', 'goodreads_book_id': '90020045', 'isbn10_clean': '0439139600', 'isbn13_clean': '97...on (same as line 2)', 'rows': 1}, {'action': 'repaired', 'issue': 'removed spaces and hyphens (R12)', 'rows': 1}], ...}
+book_id = 20045, text = 'normalized duplicate in input'
+
+    def reason_contains(entry, book_id, text):
+        reasons = " ".join(str(r.get(RECORD_REASON, "")) for r in records_for(entry, book_id)).lower()
+>       assert text in reasons, "book {}: reason should mention {!r}".format(book_id, text)
+E       AssertionError: book 20045: reason should mention 'normalized duplicate in input'
+E       assert 'normalized duplicate in input' in 'exact duplicate in input after normalization (same as line 2)'
+
+tests/test_ingest.py:87: AssertionError
+----------------------------- Captured stdout call -----------------------------
+2026-11-08 14:00:00 -0600 CST  input-1.csv
+  read 2, loaded 1, updated 0, skipped 1 (already exist 0, exact duplicates 1), rejected 0, warnings 0, for review 0
+  details: /var/folders/4k/h8qgc7yd653b1zd428bj14jc0000gn/T/ingest-test-yuxpki9o/test-ingestion-log.json
+____________ test_example_48_valid_isbn10_moved_from_isbn13_column _____________
+
+env = <conftest.Env object at 0x105ff2bb0>
+
+    def test_example_48_valid_isbn10_moved_from_isbn13_column(env):
+        """Example 48 (C9): move the valid ISBN-10, derive the ISBN-13, warn about the invalid isbn."""
+        e = load_one(env, 20048, "1854433017", "0439139600")
+>       isbns_are(env, 20048, "0439139600", "9780439139601")
+
+tests/test_ingest.py:576: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+env = <conftest.Env object at 0x105ff2bb0>, book_id = 20048
+isbn10 = '0439139600', isbn13 = '9780439139601'
+
+    def isbns_are(env, book_id, isbn10, isbn13):
+        """None means NULL: no cleaned value."""
+        stored10, stored13 = env.stored_isbns(book_id)
+        for label, expected, stored in (("ISBN-10", isbn10, stored10), ("ISBN-13", isbn13, stored13)):
+            if expected is None:
+                assert is_empty(stored), "book {}: {} should be NULL, got {!r}".format(book_id, label, stored)
+            else:
+>               assert stored == expected, "book {}: {}".format(book_id, label)
+E               AssertionError: book 20048: ISBN-10
+E               assert None == '0439139600'
+
+tests/test_ingest.py:61: AssertionError
+----------------------------- Captured stdout call -----------------------------
+2026-11-08 14:00:00 -0600 CST  input-1.csv
+  read 1, loaded 1, updated 0, skipped 0 (already exist 0, exact duplicates 0), rejected 0, warnings 2, for review 1
+  details: /var/folders/4k/h8qgc7yd653b1zd428bj14jc0000gn/T/ingest-test-tdq0fhnu/test-ingestion-log.json
+=========================== short test summary info ============================
+FAILED tests/test_ingest.py::test_example_36_rounded_product_code_not_used - ...
+FAILED tests/test_ingest.py::test_example_37_rounded_9790_value_not_used - As...
+FAILED tests/test_ingest.py::test_example_38_unconfirmed_decimal_not_derived
+FAILED tests/test_ingest.py::test_example_39_unconfirmed_decimal_product_code_not_derived
+FAILED tests/test_ingest.py::test_example_41_invalid_979_value_flagged - Asse...
+FAILED tests/test_ingest.py::test_example_45_formatting_only_duplicate_in_one_file
+FAILED tests/test_ingest.py::test_example_48_valid_isbn10_moved_from_isbn13_column
+========================= 7 failed, 52 passed in 9.74s =========================
