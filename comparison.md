@@ -68,6 +68,16 @@ Both readings are defensible under version 1.0 of R17. This is the only row in e
 * **Tests:** independent suites (R40). Mine has 59 tests and my partner's 67; both pass against their own program.
 * **Rules:** version 1.0 is the last version we both hold identically. Each of us wrote a version 1.1 with clarifications C1 to C9, and they differ on three points. C2 (padding in R17) causes the book 8174 difference. C3 (`9790` values) and C6 (the skip reason for a formatting-only repeat) don't change either database, because the data has no case where they apply.
 
-## To make the databases match
+## Why our data differs
 
-Agree on one reading of R17 padding, write it identically into a shared version 1.1 of `rules.md`, and update the program that differs. Only book 8174 would change.
+Our data is not the same, but only by one value: the cleaned ISBN-13 of book 8174 (*Washington's Crossing*). Everything else in both databases matches. George has not published his own `comparison.md` yet, so this section is based on his database, his ingestion log, his `rules.md` draft and his test suite. I will update it once we have talked it through together.
+
+**Which rule it comes from.** The difference comes from R17, the narrow `.0` exception, and how it works together with R12. The row has `isbn=195170342` and `isbn13=195170342.0`. R17 only confirms the `.0` value when it matches the row's ISBN-10 "after permitted simple formatting". R12 says restoring leading zeros is an approved repair, but it lists it separately from removing spaces and hyphens. I read "permitted simple formatting" as including the padding, so `195170342` becomes `0195170342`, matches, and I derive `9780195170344`. George reads R17 as only confirming values that are already ISBN-10-shaped, so his program stores NULL.
+
+**Did the rule let it through?** Yes. R17 does not say whether padding counts, and both readings fit the wording of version 1.0. When we each wrote our clarifications for version 1.1, I wrote that padding counts (C2) and George's C2 does not mention padding, so the gap is still open.
+
+**Did the tests let it through?** Yes. None of our 35 shared examples has a `.0` value that needs padding: example 18 uses a full ten-digit `0439139600.0`, and example 19 has a blank `isbn`. My own suite added example 40, which checks my reading, and George's clarification tests check unconfirmed decimal values but not this case. So each suite passes with its own reading, and no shared test could catch the difference.
+
+**Did the code let it through?** No, the code is not the cause. Each program does what its own reading of the rule says. Neither has a bug here.
+
+**How we close it.** We agree on one reading of R17, write it the same way into one shared version 1.1 together with C3 and C6, add an example for it, and update the program that differs. After that our databases should be identical.
